@@ -1,16 +1,23 @@
 <template>
-  <q-page >
+  <q-page>
+
     <div class="pageLayout">
     <div class="pageHeader">
-      <div class="logo"></div>
+      <div class="logo">
+
+      </div>
+      <!--<img src="../statics/icons/logo.png"/>-->
     </div>
     <div class="pageBody relative-position">
       <div class="bodyContent">
         <div class="content-container fit relative-position">
-          <!--<keep-alive>-->
-          <pdfplayer v-show="currentNav==0" :pdflist="RBpdflist"></pdfplayer>
-          <contentplayer  v-show="currentNav==5" :lanmudata="lanmuData"></contentplayer>
-          <!--</keep-alive>-->
+
+          <!--<pdfplayer v-show="currentNav==0" :pdflist="RBpdflist"></pdfplayer>-->
+            <!--吃在银川 lanmuid:68-->
+          <!--<contentplayer  v-show="currentNav==68" :lanmudata="lanmu"></contentplayer>-->
+          <!--游在银川 lanmuid:68-->
+          <Yzyc v-if="currentNav==69" :lanmudata="lanmu"></Yzyc>
+
           <!--<mymap></mymap>-->
 
         <!--<pdfplayer :pdflist="pdflist"></pdfplayer>-->
@@ -19,11 +26,12 @@
 
       </div>
 
-      <div class="navMenu relative-position">
 
+    </div>
+      <div class="navMenu relative-position">
         <swiper :options="swiperOption" ref="mySwiper">
           <!-- slides -->
-          <swiper-slide style="width: auto" :key="index" v-for="(item,index) in lanmuList">
+          <swiper-slide style="width: auto" :key="index" v-for="(item,index) in lanmuData">
 
             <button @click="navBtnClick(index,item)" glossy
                     class="navbtns  q-btn inline relative-position q-btn-item non-selectable q-btn-rectangle q-btn-push q-focusable q-hoverable text-white"
@@ -40,14 +48,14 @@
         <div class="swiper-button-prev ss" style="left: 0" slot="button-prev"></div>
         <div class="swiper-button-next ss" style="right: 0" slot="button-next"></div>
       </div>
-    </div>
     <div class="pageFoot">
-      <video controls :src="videolist[currentVideoIndex]" muted id="myVideo" ref="myVideo" autoplay preload="auto"
+      <video  :src="videolist[currentVideoIndex]" muted id="myVideo" ref="myVideo" autoplay preload="auto"
              @ended="nextVideo">
 
       </video>
     </div>
     </div>
+
   </q-page>
 </template>
 <script>
@@ -57,15 +65,18 @@
   import contentplayer from '../components/contentplayer.vue'
   import 'swiper/dist/css/swiper.css'
   import {swiper, swiperSlide} from 'vue-awesome-swiper'
+  import Yzyc from "../components/yzyc"
 
   export default {
     name: 'PageIndex',
     components: {
+      Yzyc,
       pdfplayer,
       swiper,
       swiperSlide,
       contentplayer,
-      mymap
+      mymap,
+      Yzyc
 
     },
     filters:{
@@ -80,18 +91,68 @@
           this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:csid,pwd:pwd}}).then((response)=>{
           if (response.status == 200) {
                var data=eval('(' + response.data + ')');
-              this.dataList1=data.dataList1;
-              this.dataList2=data.dataList2;
-              this.dataList3=data.dataList3;
-              this.lanmuList=data.lanmuList.sort(function (a,b) {
-                return a.Orders-b.Orders;
-              });
+               var lanmuList=new Array();
+               //栏目
+               data.lanmuList.forEach((item,index)=> {
+                 let obj=item;
+                 let navArray= data.dataList1.filter(function (x) {
+                    return x.Lm_ID==item.LanmuID;
+                  });
+                 obj.dataList1=navArray;
+                 //二级
+                 obj.dataList1.forEach((o,i)=>{
+                   let d2=o;
+                   let secondNavArray=data.dataList2.filter((z)=>{
+                     return z.PID==o.ID;
+                   });
+                   d2.dataList2=secondNavArray;
+                   d2.dataList2.forEach((itm,idx)=>{
+                     let d3=itm;
+                     let thirdNavArray=data.dataList3.filter((y)=>{
+                       return y.PID==itm.ID;
+                     });
+                     d3.dataList3=thirdNavArray;
+
+                   });
+                    });
+                 lanmuList.push(obj);
+                 });
+
+
+
+
+
+
+
+
+
+               //console.log(lanmuList);
+               console.log(lanmuList)
+               this.lanmuData=lanmuList;
+
+
+
+
+
+
+
+
+
+
+
+              // this.dataList1=data.dataList1;
+              // this.dataList2=data.dataList2;
+              // this.dataList3=data.dataList3;
+              // this.lanmuList=data.lanmuList.sort(function (a,b) {
+              //   return a.Orders-b.Orders;
+              // });
 
 
           } else {
 
           }
         }).catch((err) => {
+          console.log(err)
           this.$q.notify({
 
             message: `获取报纸错误！`,
@@ -108,17 +169,16 @@
 
       navBtnClick: function (index,item) {
 
-        this.currentNav=index;
-        //this.LanmuID=item.LanmuID;
-        let dl_1=this.dataList1.filter(function (d) {
-          return d.Lm_ID=item.LanmuID;
-        })
-//        var obj=new object();
-//        obj.dataList1=dl_1;
-//        obj.dataList2=this.dataList2;
-//        obj.dataList3=this.dataList3;
-//        this.lanmuData=obj;
-////        {dataList1:dl_1,dataList2:this.dataList2,dataList3:this.dataList3};
+        this.currentNav=item.LanmuID;
+         this.lanmu= this.lanmuData.filter((x)=>{
+          return x.LanmuID==item.LanmuID;
+        })[0];
+         console.log(this.lanmu);
+
+
+
+
+        //this.lanmuData={ lanmuId:item.LanmuID,dataList1:this.dataList1,dataList2:this.dataList2,dataList3:this.dataList3};
 
       },
       nextVideo: function () {
@@ -137,8 +197,9 @@
     },
     data() {
       return {
-        currentNav:0,
-        lanmuData:{},
+        currentNav:"",
+        lanmu:[],
+        lanmuData:[],
         dataList1:[],//一级菜单
         dataList2:[],//二级菜单
         dataList3:[],//内容
@@ -180,12 +241,14 @@
 </script>
 <style>
   .pageLayout {
-    /*max-width: 1280px;*/
-    /*max-height: 1920px;*/
     width: 640px;
-    height: 960px;
+    height: 100%;
+    /*width: 1280px;*/
+    /*height: 1920px;*/
+    min-width: 640px;
+    min-height: 960px;
     margin: 0 auto;
-    border: 1px solid red;
+
 
     /*width: 100%;*/
     /*height:100%;*/
@@ -196,21 +259,26 @@
     background: rgb(34, 53, 74);
     width: 100%;
     padding: 1rem;
+    height: 10%;
   }
 
   .logo {
     background: url("../statics/icons/logo.png") no-repeat 0 0/100% 100%;
-    width: 10rem;
-    height: 3rem;
+    width: 30%;
+    height: 100%;
   }
 
   .pageBody {
     background: rgb(210, 210, 211);
+    height: 45%;
+  }
+  .pageFoot{
+    height: 35%;
   }
 
   .bodyContent{
     width: 100%;
-    height:40rem;
+    height: 100%;
     padding: 1rem;
 
   }
@@ -268,7 +336,7 @@
 
   #myVideo {
     width: 100%;
-    height: 27rem;
+    height: 100%;
     background: black;
   }
 

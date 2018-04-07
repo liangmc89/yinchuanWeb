@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf" style="height: 100%">
     <!--<q-layout-header>-->
       <!--<q-toolbar-->
         <!--color="primary"-->
@@ -56,7 +56,7 @@
       <!--</q-list>-->
     <!--</q-layout-drawer>-->
 
-    <q-page-container>
+    <q-page-container style="height: 100%;">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -81,4 +81,7 @@ export default {
 </script>
 
 <style>
+  main{
+    height: 100%;
+  }
 </style>

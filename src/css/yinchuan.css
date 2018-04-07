@@ -1,0 +1,81 @@
+html,body{
+  font-size: 62.5%;
+  height: 100%;
+}
+.content-layout{
+  padding:.5rem;
+  height: 100%;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+.content-nav{
+  padding: .3rem;
+  background: url("../statics/icons/navBG.png") no-repeat 0 0/100% 100%;
+
+}
+.content-navbtns{
+  /*background: url("../statics/icons/navBG.png") no-repeat 0 0/100% 100%;*/
+  border-radius: 0;
+
+}
+.content-navbtn{
+  text-align: center;
+}
+.content-navbtn img{
+  height: 1rem;
+  width: 1.2rem;
+}
+.contentnavbtn-focus{
+  background:url("../statics/icons/navCurrent.png") no-repeat 0 0/100% 100%;
+}
+.c-title{ font-size: 1.6rem }
+.secondNav{
+  font-size: 1.4rem;
+  color:#0d47a1;
+  padding-right: 1rem;
+}
+.secondNav ul{
+  padding: 0;
+}
+
+.c-text{
+  font-size: 1.2rem;
+
+  line-height: 1.6rem;
+
+}
+
+
+
+.content-title ul{margin:0;}
+.content-body{
+
+  flex: 1;
+  padding: .5rem;
+
+
+}
+
+
+.secondNav li{
+  list-style: none;
+  margin-bottom: .3rem;
+
+}
+.secondNav li:hover{
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline: #00acc1;
+}
+.secondNav-focus{
+  color: #00c853;
+}
+
+.text {
+  height: auto;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+
+}

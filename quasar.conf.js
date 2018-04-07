@@ -71,7 +71,14 @@ module.exports = function (ctx) {
         'QPopover',
         'QStepper',
         'QStep',
-        'QStepperNavigation'
+        'QStepperNavigation',
+        'QCard',
+        'QCardTitle',
+        'QCardMain',
+        'QCardMedia',
+        'QCardSeparator',
+        'QCardActions',
+        'QWindowResizeObservable'
 
       ],
       directives: [
