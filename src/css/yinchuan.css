@@ -46,8 +46,10 @@ html,body{
 
 }
 
+.content-hr{
+  border: 1px dashed grey;
 
-
+}
 .content-title ul{margin:0;}
 .content-body{
 
@@ -78,4 +80,13 @@ html,body{
   box-sizing: border-box;
 
 
+}
+
+.fcxx-secondNav{
+
+}
+
+.zwgk-navbtn{
+  background-size: 100% 80%;
+  background-repeat: no-repeat;
 }

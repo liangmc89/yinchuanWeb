@@ -14,10 +14,25 @@
 
           <!--<pdfplayer v-show="currentNav==0" :pdflist="RBpdflist"></pdfplayer>-->
             <!--吃在银川 lanmuid:68-->
-          <!--<contentplayer  v-show="currentNav==68" :lanmudata="lanmu"></contentplayer>-->
+          <Yzyc v-if="currentNav==68" :key="currentNav" :lanmudata="lanmu"></Yzyc>
           <!--游在银川 lanmuid:68-->
-          <Yzyc v-if="currentNav==69" :lanmudata="lanmu"></Yzyc>
-
+          <Yzyc v-if="currentNav==69" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <!--宜居银川  LanmuID:70-->
+          <Yzyc v-if="currentNav==70" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <!--休闲娱乐  LanmuID:72-->
+          <Yzyc v-if="currentNav==72" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <!--投资理财 LanmuID:71-->
+          <Yzyc v-if="currentNav==71" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <!--医疗保健 LanmuID：73-->
+          <Yzyc v-if="currentNav==73" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <!--媒体矩阵 LanmuID：64-->
+          <Yzyc v-if="currentNav==64" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <!--社保医疗 LanmuID：58-->
+          <Yzyc v-if="currentNav==58" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <!--房产信息 LanmuID：27-->
+          <Fcxx v-if="currentNav==27" :key="currentNav" :lanmudata="lanmu"></Fcxx>
+          <!--政務公開-->
+          <Zwgk v-if="currentNav==20" :key="currentNav" :lanmudata="lanmu"></Zwgk>
           <!--<mymap></mymap>-->
 
         <!--<pdfplayer :pdflist="pdflist"></pdfplayer>-->
@@ -65,7 +80,10 @@
   import contentplayer from '../components/contentplayer.vue'
   import 'swiper/dist/css/swiper.css'
   import {swiper, swiperSlide} from 'vue-awesome-swiper'
-  import Yzyc from "../components/yzyc"
+  import Yzyc from "../components/yzyc.vue"
+  import Fcxx from "../components/fcxx.vue"
+  import Zwgk from '../components/zwgk.vue'
+
 
   export default {
     name: 'PageIndex',
@@ -76,7 +94,9 @@
       swiperSlide,
       contentplayer,
       mymap,
-      Yzyc
+      Yzyc,
+      Fcxx,
+      Zwgk
 
     },
     filters:{
@@ -241,7 +261,8 @@
 </script>
 <style>
   .pageLayout {
-    width: 640px;
+    /*width: 640px;*/
+    width: 100%;
     height: 100%;
     /*width: 1280px;*/
     /*height: 1920px;*/
@@ -306,8 +327,8 @@
   }
 
   .navbtn img {
-    width: 2rem;
-    height: 2rem;
+    width: 2.6rem;
+    height: 2.6rem;
   }
   .noIcon{
     width: 2rem;

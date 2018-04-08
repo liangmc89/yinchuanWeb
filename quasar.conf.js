@@ -78,7 +78,10 @@ module.exports = function (ctx) {
         'QCardMedia',
         'QCardSeparator',
         'QCardActions',
-        'QWindowResizeObservable'
+        'QWindowResizeObservable',
+        'QFab',
+        'QFabAction',
+        'QPageSticky'
 
       ],
       directives: [
