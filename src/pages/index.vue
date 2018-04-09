@@ -11,12 +11,21 @@
     <div class="pageBody relative-position">
       <div class="bodyContent">
         <div class="content-container fit relative-position">
+          <!--<transition-->
+
+            <!--enter-active-class="animated fadeIn"-->
+            <!--leave-active-class="animated fadeOut"-->
+          <!--&gt;-->
 
           <!--<pdfplayer v-show="currentNav==0" :pdflist="RBpdflist"></pdfplayer>-->
             <!--吃在银川 lanmuid:68-->
           <Yzyc v-if="currentNav==68" :key="currentNav" :lanmudata="lanmu"></Yzyc>
           <!--游在银川 lanmuid:68-->
           <Yzyc v-if="currentNav==69" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <!--市监管局 lanmuid:62-->
+          <Yzyc v-if="currentNav==62" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <!--银川金凤 lanmuid:55-->
+          <Yzyc v-if="currentNav==55" :key="currentNav" :lanmudata="lanmu"></Yzyc>
           <!--宜居银川  LanmuID:70-->
           <Yzyc v-if="currentNav==70" :key="currentNav" :lanmudata="lanmu"></Yzyc>
           <!--休闲娱乐  LanmuID:72-->
@@ -32,11 +41,13 @@
           <!--房产信息 LanmuID：27-->
           <Fcxx v-if="currentNav==27" :key="currentNav" :lanmudata="lanmu"></Fcxx>
           <!--政務公開-->
-          <Zwgk v-if="currentNav==20" :key="currentNav" :lanmudata="lanmu"></Zwgk>
+          <Zwgk v-if="currentNav==20" :key="currentNav" :lanmudata="lanmu" ></Zwgk>
           <!--<mymap></mymap>-->
 
         <!--<pdfplayer :pdflist="pdflist"></pdfplayer>-->
         <!--<contentplayer></contentplayer>-->
+
+          <!--</transition>-->
         </div>
 
       </div>
@@ -110,7 +121,8 @@
       getLanmuData: function () {
           this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:csid,pwd:pwd}}).then((response)=>{
           if (response.status == 200) {
-               var data=eval('(' + response.data + ')');
+
+            var data=eval('(' + response.data + ')');
                var lanmuList=new Array();
                //栏目
                data.lanmuList.forEach((item,index)=> {
@@ -118,6 +130,7 @@
                  let navArray= data.dataList1.filter(function (x) {
                     return x.Lm_ID==item.LanmuID;
                   });
+                 obj.isShowNav=true;
                  obj.dataList1=navArray;
                  //二级
                  obj.dataList1.forEach((o,i)=>{
@@ -261,8 +274,8 @@
 </script>
 <style>
   .pageLayout {
-    /*width: 640px;*/
-    width: 100%;
+    width: 640px;
+    /*width: 100%;*/
     height: 100%;
     /*width: 1280px;*/
     /*height: 1920px;*/

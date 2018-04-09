@@ -20,11 +20,11 @@
 
     <div class="content-body" id="content-body">
       <hr class="content-hr">
-      <div class="row">
-      <div class="content-title col-6"  >
-        <swiper :options="scrollswiperOption" :style="{height:swiperHeight}" v-if="isShow">
+      <div class="row" >
+      <div class="content-title col-6"   >
+        <swiper :options="scrollswiperOption" style="height:33.5vh" >
           <swiper-slide style="height: auto" >
-            <div class="secondNav" v-if="isShow" >
+            <div class="secondNav"  >
               <ul>
                 <li :key="index" :class="[index==id2?'secondNav-focus':'']"  v-for="(item,index) in lanmudata.dataList1[id1].dataList2" @click="secondNavClick(item,index)">
                   {{item.Title}}
@@ -35,8 +35,8 @@
           </swiper-slide>
         </swiper>
       </div>
-      <div class="content-container col-6 ">
-        <swiper :options="scrollswiperOption" :style="{height:swiperHeight}"v-if="isShow&&lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3!=undefined" style="padding: .5rem;border-radius: .3rem" :key="id2" class="shadow-3">
+      <div class="content-container col-6 " >
+        <swiper :options="scrollswiperOption"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3!=undefined" style="padding: .5rem;border-radius: .3rem;height:33.5vh" :key="id2" class="shadow-3">
           <swiper-slide    style="padding: .2rem;height: auto"  >
             <swiper :options="photoswiperOption" >
               <swiper-slide :key="index" v-for="(item,index) in lanmudata.dataList1[id1].dataList2[id2].dataList3">
@@ -85,9 +85,14 @@
 
       },
       onResize (size) {
-//        this.swiperHeight=document.getElementById('content-body').clientHeight-24+'px';
-//        this.isShow=true;
-        //console.log(size)
+
+//        if(document.getElementById('content-body')){
+//          this.isShow=false;
+//          this.swiperHeight=document.getElementById('content-body').clientHeight-24+'px';
+//          this.isShow=true;
+//        }
+//
+//        console.log(document.getElementById('content-body').clientHeight);
       }
     },
     components: {
@@ -95,8 +100,11 @@
       swiperSlide
     },
     mounted:function () {
-       this.swiperHeight=document.getElementById('content-body').clientHeight-24+'px';
-       this.isShow=true;
+//       if(document.getElementById('content-body')){
+//         this.swiperHeight=document.getElementById('content-body').clientHeight-24+'px';
+//
+//       }
+//      this.isShow=true;
 
     },
 
@@ -105,7 +113,7 @@
         id1:0,
         id2:0,
         isShow:false,
-        swiperHeight:'',
+        swiperHeight:'300',
         subswiperOption: {
           slidesPerView: 'auto'
         },

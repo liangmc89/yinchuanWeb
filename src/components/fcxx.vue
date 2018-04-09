@@ -114,6 +114,7 @@
           slidesPerView: 'auto'
         },
         photoswiperOption: {
+          lazy: true,
           effect: 'flip',
           loop: true,
           autoplay:true,

@@ -89,4 +89,55 @@ html,body{
 .zwgk-navbtn{
   background-size: 100% 80%;
   background-repeat: no-repeat;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+  border: 2px solid rgb(28,55,95);
+  width: 97%;
+  height: 97%;
+  cursor: pointer;
+}
+
+.zwgk-nav-text{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 22%;
+  background: rgb(28,55,95);
+  line-height: calc(100%*2.5);
+
+}
+
+.zwgk-top-nav{
+  padding: 0 1.5rem;
+  background: url("../statics/icons/zhengwu.png") no-repeat 0 0/100% 100%;
+}
+.detail-title{
+  font-size: 1.8rem;
+  font-weight:500;
+  text-align: center;
+  margin: 1rem 2rem;
+  border-bottom: .3rem solid rgb(102,102,102);
+  line-height: 2.5rem;
+
+
+}
+.zwgk-left-nav{
+  color: white;
+  background: url("../statics/icons/zhengwu2.png") no-repeat 0 0/100% 100%;
+  padding: 0 .5rem;
+  line-height: 1.6rem;
+}
+
+.leftNavOut{
+  padding: .5rem .5rem .5rem 0;
+  /*padding: .5rem 1rem .5rem 2rem;*/
+  border-bottom: 3px solid #1D3556;
+
+}
+.leftNav{
+  padding-left: 1rem;
+}
+.leftNav-focus .leftNav{
+  border-left: .5rem solid rgb(51,204,255);
 }
