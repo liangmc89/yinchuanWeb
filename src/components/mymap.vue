@@ -1,31 +1,35 @@
 <template>
   <div class="mymap">
     <div class="map-body relative-position">
-      <div class="bus">
+      <div class="bus" v-if="id1==0">
          <ul class="bus-ul">
-           <li v-for="(item,index) in bus">
-             <q-btn size="xs" dense color="white" text-color="primary" @click="showBus(item)" :label="item.line">
+           <li v-for="(item,index) in lanmudata.dataList1[id1].dataList2">
+             <q-btn size="xs" dense color="white" text-color="primary" @click="id2=index" :label="item.Title">
                <q-popover
                  anchor="bottom left"
                  self="top left"
                >
                 <div class="bus-card">
                   <div class="bus-title">
-                    <span class="bus-line">100路公交</span><span class="bus-time">2018-4-3 14:47:59</span>
+                    <span class="bus-line">{{item.Title}}</span><span class="bus-time">2018-4-3 14:47:59</span>
                   </div>
                   <div class="bus-info row">
-                    <div class="col-4">
-                      <img src="../statics/icons/bus.png">
+                    <div class="col-5">
+                      <img style="width: 100%;height: auto" :src="getUrl(item.Icon)">
                     </div>
-                    <div class="col-6">
-                        sf
+                    <div class="col-7">
+                      运营时间：{{item.Ext1}}<br>
+                      发车时间：{{item.Ext2}}<br>
+                      起点站首末时间：{{item.Ext3}}<br>
+                      终点站首末时间：{{item.Ext4}}<br>
+                      票价信息：{{item.Ext5}}<br>
+                      汽车公司：{{item.Ext6}}<br>
                     </div>
                   </div>
                   <div class="bus-stations">
                     <swiper :options="busswiperOption" ref="bus-swiper" >
-                      <!-- slides -->
-                      <swiper-slide :key="_index" v-for="(_item,_index) in item.stations" style="width: auto">
-                          <q-btn>{{_item.name}}</q-btn>
+                      <swiper-slide  style="width: auto">
+                          <span :key="index" v-for="(item,index) in lanmudata.dataList1[id1].dataList2[id2].dataList3">{{item.Title}}</span>
                       </swiper-slide>
 
                     </swiper>
@@ -39,20 +43,38 @@
          </ul>
 
       </div>
-      <div class="busCard">
-
+      <div class="mapCard fit" v-else>
+        <baidu-map class="map" :center="center" :zoom="zoom" @ready="handler">
+        </baidu-map>
       </div>
-      <div class="map"></div>
     </div>
     <div class="map-nav no-wrap">
-      <div class="nav-btn-wrap" v-for="(index,item) in mapNav">
-        <button  @click="MapNavBtnClick(index,item)"
-                :style="{backgroundImage:'url(../statics/icons/'+index.btn+'.png)'}" glossy
+
+        <button  @click="id1=0"
+                 glossy style="background: url('../statics/icons/bus.png') no-repeat 0 0/cover;"
                 class="map-navbtns  q-btn inline relative-position q-btn-item non-selectable q-btn-rectangle q-btn-push q-focusable q-hoverable text-white"
-                v-bind:class="[index==currentNav?'map-navbtn-focus':'']">
+                v-bind:class="[id1==0?'map-navbtn-focus':'']">
 
         </button>
-      </div>
+        <button  @click="id1=1"
+                 glossy style="background: url('../statics/icons/hotel.png') no-repeat 0 0/cover;"
+                 class="map-navbtns  q-btn inline relative-position q-btn-item non-selectable q-btn-rectangle q-btn-push q-focusable q-hoverable text-white"
+                 v-bind:class="[id1==1?'map-navbtn-focus':'']">
+
+        </button>
+        <button  @click="id1=2"
+                 glossy style="background: url('../statics/icons/food.png') no-repeat 0 0/cover;"
+                 class="map-navbtns  q-btn inline relative-position q-btn-item non-selectable q-btn-rectangle q-btn-push q-focusable q-hoverable text-white"
+                 v-bind:class="[id1==2?'map-navbtn-focus':'']">
+
+        </button>
+        <button  @click="id1=3"
+                 glossy style="background: url('../statics/icons/bank.png') no-repeat 0 0/cover;"
+                 class="map-navbtns  q-btn inline relative-position q-btn-item non-selectable q-btn-rectangle q-btn-push q-focusable q-hoverable text-white"
+                 v-bind:class="[id1==3?'map-navbtn-focus':'']">
+
+        </button>
+
 
     </div>
   </div>
@@ -61,45 +83,51 @@
 <script>
   import 'swiper/dist/css/swiper.css'
   import {swiper, swiperSlide} from 'vue-awesome-swiper'
-  export default {
+  import {ResourceUrl} from '../config/config'
 
+
+  export default {
+    props:["lanmudata"],
     methods: {
-      MapNavBtnClick(index, item) {
-         this.currentNav=index;
+      MapNavBtnClick:function (index) {
+        this.id2=index;
       },
-      showBus(item){
-        this.isShow=true;
-        this.currentBus=item;
+      getUrl: function(str){
+        if(!str) return '';
+        return ResourceUrl+str;
+      },
+      showBus:function (index) {
+        this.id2=index;
+      },
+      handler ({BMap, map}) {
+        console.log(BMap, map)
+        this.center.lng = 116.404
+        this.center.lat = 39.915
+        this.zoom = 15
       }
     },
     components: {
       swiper,
       swiperSlide
+
     },
-    mounted:function () {
-      this.currentNav=0;
-    },
+
     data() {
 
       return {
-        currentNav: 0,
-        busswiperOption: {
-          slidesPerView: 'auto'
-        },
-        mapNav: [
-          {btn: 'bus'},
-          {btn: 'food'},
-          {btn: 'hotel'},
-          {btn: 'bank'},
-          {btn: 'Hydropower'}
-        ],
-        bus:[
-          {line:"121路公交",stations:[{name:"起点站",index:0},{name:"第一站",index:1},{name:"第一站",index:2},{name:"第二站",index:3},{name:"第三站",index:4},{name:"第四站",index:5}]},
-          {line:"121路公交",stations:[{name:"起点站",index:0},{name:"第一站",index:1},{name:"第一站",index:2},{name:"第二站",index:3},{name:"第三站",index:4},{name:"第四站",index:5}]},
-        ]
+        id1:0,
+        id2:0,
+        center: {lng: 0, lat: 0},
+        zoom: 3,
+        busswiperOption:{
+
+        }
+        }
+
+
 
       }
-    }
+
   }
 </script>
 
@@ -107,6 +135,10 @@
   .mymap{
     height:100%;
     padding: 1rem;
+  }
+  .map{
+    width: 100%;
+    height: 100%;
   }
   .map-navbtns {
     background-repeat: no-repeat;

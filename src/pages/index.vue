@@ -42,7 +42,8 @@
           <Fcxx v-if="currentNav==27" :key="currentNav" :lanmudata="lanmu"></Fcxx>
           <!--政務公開-->
           <Zwgk v-if="currentNav==20" :key="currentNav" :lanmudata="lanmu" ></Zwgk>
-          <!--<mymap></mymap>-->
+          <!--地图指引-->
+          <mymap v-if="currentNav==24" :key="currentNav" :lanmudata="lanmu"></mymap>
 
         <!--<pdfplayer :pdflist="pdflist"></pdfplayer>-->
         <!--<contentplayer></contentplayer>-->
