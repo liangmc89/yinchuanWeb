@@ -19,33 +19,35 @@
 
           <!--<pdfplayer v-show="currentNav==0" :pdflist="RBpdflist"></pdfplayer>-->
             <!--吃在银川 lanmuid:68-->
-          <Yzyc v-if="currentNav==68" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==68" :key="68" :lanmudata="lanmu"></Yzyc>
           <!--游在银川 lanmuid:68-->
-          <Yzyc v-if="currentNav==69" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==69" :key="69" :lanmudata="lanmu"></Yzyc>
           <!--市监管局 lanmuid:62-->
-          <Yzyc v-if="currentNav==62" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==62" :key="62" :lanmudata="lanmu"></Yzyc>
           <!--银川金凤 lanmuid:55-->
-          <Yzyc v-if="currentNav==55" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==55" :key="55" :lanmudata="lanmu"></Yzyc>
           <!--宜居银川  LanmuID:70-->
-          <Yzyc v-if="currentNav==70" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==70" :key="70" :lanmudata="lanmu"></Yzyc>
           <!--休闲娱乐  LanmuID:72-->
-          <Yzyc v-if="currentNav==72" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==72" :key="72" :lanmudata="lanmu"></Yzyc>
           <!--投资理财 LanmuID:71-->
-          <Yzyc v-if="currentNav==71" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==71" :key="71" :lanmudata="lanmu"></Yzyc>
           <!--医疗保健 LanmuID：73-->
-          <Yzyc v-if="currentNav==73" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==73" :key="73" :lanmudata="lanmu"></Yzyc>
           <!--媒体矩阵 LanmuID：64-->
-          <Yzyc v-if="currentNav==64" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==64" :key="64" :lanmudata="lanmu"></Yzyc>
           <!--社保医疗 LanmuID：58-->
-          <Yzyc v-if="currentNav==58" :key="currentNav" :lanmudata="lanmu"></Yzyc>
+          <Yzyc v-if="currentNav==58" :key="58" :lanmudata="lanmu"></Yzyc>
           <!--房产信息 LanmuID：27-->
-          <Fcxx v-if="currentNav==27" :key="currentNav" :lanmudata="lanmu"></Fcxx>
-          <!--政務公開-->
-          <Zwgk v-if="currentNav==20" :key="currentNav" :lanmudata="lanmu" ></Zwgk>
-          <!--地图指引-->
-          <mymap v-if="currentNav==24" :key="currentNav" :lanmudata="lanmu"></mymap>
-
-        <!--<pdfplayer :pdflist="pdflist"></pdfplayer>-->
+          <Fcxx v-if="currentNav==27" :key="27" :lanmudata="lanmu"></Fcxx>
+          <!--政務公開 LanmuID：20-->
+          <Zwgk v-if="currentNav==20" :key="20" :lanmudata="lanmu" ></Zwgk>
+          <!--地图指引 LanmuID：24-->
+          <mymap v-if="currentNav==24" :key="24" :lanmudata="lanmu"></mymap>
+          <!--银川日报 LanmuID：35-->
+          <pdfplayer v-show="currentNav==35" :key="35" :pdflist="RBpdflist"></pdfplayer>
+          <!--银川晚报 LanmuID：31-->
+          <pdfplayer v-show="currentNav==31" :key="31" :pdflist="RBpdflist"></pdfplayer>
         <!--<contentplayer></contentplayer>-->
 
           <!--</transition>-->
@@ -62,7 +64,7 @@
 
             <button @click="navBtnClick(index,item)" glossy
                     class="navbtns  q-btn inline relative-position q-btn-item non-selectable q-btn-rectangle q-btn-push q-focusable q-hoverable text-white"
-                    v-bind:class="[index==currentNav?'navbtn-focus':'']">
+                    v-bind:class="[item.LanmuID==currentNav?'navbtn-focus':'']">
               <div class="navbtn">
                 <img v-if="item.VerticalIcon" :src="getUrl(item.VerticalIcon)">
                 <div v-else class="noIcon"></div>
@@ -119,6 +121,47 @@
         if(!str) return '';
         return ResourceUrl+str;
       },
+      getNewsPaper:function () {
+        this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:csid,pwd:pwd}}).then((response)=>{
+
+            if (response.status == 200) {
+
+              var data=response.data ;
+              //日报
+               var dayNews=data.filter(function (x) {
+                 return x.PublishType==1&&x.LayoutType==1;
+               });
+               //晚报
+               var nightNews=data.filter(function (x) {
+                 return x.PublishType==0&&x.LayoutType==1;
+               });
+               if (dayNews.length>0){
+                this.RBpdflist= dayNews.sort(function (a,b) {
+                  return  b.NPDate-a.NPDate;
+                })[0].PageFile.split('|').sort(function (x,y) {
+                  return x-y;
+                });
+               }
+               if(nightNews.length>0){
+                 this.WBpdflist=nightNews.sort(function (a,b) {
+                   return b.NPDate-a.NPDate;
+                 })[0].PageFile.split('|').sort(function (x,y) {
+                   return x-y;
+                 });
+               }
+
+               console.log(this.WBpdflist);
+               console.log(this.RBpdflist);
+
+
+
+            }else{
+
+            }
+        }).catch((err)=>{
+            console.error(err)
+        })
+      },
       getLanmuData: function () {
           this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:csid,pwd:pwd}}).then((response)=>{
           if (response.status == 200) {
@@ -126,7 +169,9 @@
             var data=eval('(' + response.data + ')');
                var lanmuList=new Array();
                //栏目
-               data.lanmuList.forEach((item,index)=> {
+               data.lanmuList.sort(function (a,b) {
+                 return a.Orders-b.Orders;
+               }).forEach((item,index)=> {
                  let obj=item;
                  let navArray= data.dataList1.filter(function (x) {
                     return x.Lm_ID==item.LanmuID;
@@ -151,37 +196,10 @@
                     });
                  lanmuList.push(obj);
                  });
-
-
-
-
-
-
-
-
-
                //console.log(lanmuList);
                console.log(lanmuList)
                this.lanmuData=lanmuList;
-
-
-
-
-
-
-
-
-
-
-
-              // this.dataList1=data.dataList1;
-              // this.dataList2=data.dataList2;
-              // this.dataList3=data.dataList3;
-              // this.lanmuList=data.lanmuList.sort(function (a,b) {
-              //   return a.Orders-b.Orders;
-              // });
-
-
+               this.currentNav=lanmuList[0].LanmuID;
           } else {
 
           }
@@ -189,7 +207,7 @@
           console.log(err)
           this.$q.notify({
 
-            message: `获取报纸错误！`,
+            message: `获取栏目数据时错误！`,
             timeout: 4000, // in milliseconds; 0 means no timeout
             type: 'negative',
             color: 'positive',
@@ -208,10 +226,6 @@
           return x.LanmuID==item.LanmuID;
         })[0];
          console.log(this.lanmu);
-
-
-
-
         //this.lanmuData={ lanmuId:item.LanmuID,dataList1:this.dataList1,dataList2:this.dataList2,dataList3:this.dataList3};
 
       },
@@ -228,35 +242,19 @@
     },
     mounted: function () {
       this.getLanmuData();
+      this.getNewsPaper();
     },
     data() {
       return {
         currentNav:"",
         lanmu:[],
         lanmuData:[],
-        dataList1:[],//一级菜单
-        dataList2:[],//二级菜单
-        dataList3:[],//内容
         lanmuList:[],//栏目列表
         LanumID: 0,//当前栏目
         currentVideoIndex: 0,
         videolist: ['http://occcudapv.bkt.clouddn.com/guchenghu/bb7c6e4c-e62e-4ea7-bdc9-f9ce3a678274.mp4'
 //          ,
 //                 'http://vjs.zencdn.net/v/oceans.mp4'
-        ],
-        navButtons: [
-          {label: '银川日报', value: 'one'},
-          {label: '银川日报', value: 'two'},
-          {label: '银川日报', value: 'three'},
-          {label: '银川日报', value: 'a'},
-          {label: '银川日报', value: 'b'},
-          {label: '银川日报', value: 'c'},
-          {label: '银川日报', value: 'd'},
-          {label: '银川日报', value: 'e'},
-          {label: '银川日报', value: 'f'},
-          {label: '银川日报', value: 'g'},
-          {label: '银川日报', value: 'h'},
-          {label: '银川日报', value: 'i'}
         ],
         swiperOption: {
           slidesPerView: "auto",
@@ -267,7 +265,8 @@
           }
 
         },
-        RBpdflist: ['../statics/1.pdf', '../statics/2.pdf', '../statics/3.pdf', '../statics/4.pdf', '../statics/5.pdf']
+        RBpdflist:[] ,
+        WBpdflist: []
       }
 
     }
