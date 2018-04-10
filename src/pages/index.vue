@@ -122,7 +122,7 @@
         return ResourceUrl+str;
       },
       getNewsPaper:function () {
-        this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:csid,pwd:pwd}}).then((response)=>{
+        this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:usbKey.csid,pwd:usbKey.pwd}}).then((response)=>{
 
             if (response.status == 200) {
 
@@ -163,7 +163,7 @@
         })
       },
       getLanmuData: function () {
-          this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:csid,pwd:pwd}}).then((response)=>{
+          this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:usbKey.csid,pwd:usbKey.pwd}}).then((response)=>{
           if (response.status == 200) {
 
             var data=eval('(' + response.data + ')');
