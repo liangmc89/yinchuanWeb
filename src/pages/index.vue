@@ -99,6 +99,7 @@
   import Zwgk from '../components/zwgk.vue'
 
 
+
   export default {
     name: 'PageIndex',
     components: {
@@ -117,12 +118,25 @@
 
     },
     methods: {
+
+
+      getQueryString:function(name) {
+          var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+          var r = window.location.search.substr(1).match(reg);
+          if (r != null) {
+            return unescape(r[2]);
+          }
+          return null;
+        },
+
       getUrl: function(str){
         if(!str) return '';
         return ResourceUrl+str;
       },
       getNewsPaper:function () {
-        this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:usbKey.csid,pwd:usbKey.pwd}}).then((response)=>{
+        console.log(this.getQueryString("csid")+'   '+this.getQueryString("pwd"));
+
+        this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
 
             if (response.status == 200) {
 
@@ -163,7 +177,8 @@
         })
       },
       getLanmuData: function () {
-          this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:usbKey.csid,pwd:usbKey.pwd}}).then((response)=>{
+
+          this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
           if (response.status == 200) {
 
             var data=eval('(' + response.data + ')');
@@ -274,11 +289,11 @@
 </script>
 <style>
   .pageLayout {
-    width: 640px;
+    /*width: 640px;*/
     /*width: 100%;*/
-    height: 100%;
-    /*width: 1280px;*/
-    /*height: 1920px;*/
+    /*height: 100%;*/
+    width: 1280px;
+    height: 1920px;
     min-width: 640px;
     min-height: 960px;
     margin: 0 auto;

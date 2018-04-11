@@ -1,7 +1,7 @@
 <template>
   <swiper :options="swiperOption" class="fit">
     <swiper-slide :key="index" v-for="(item,index) in pdflist">
-     <!--<pdf :key="index"  :src="item" ></pdf>-->
+     <pdf :key="index"  :src="item"  style="height: 100%;height: 100%"></pdf>
     </swiper-slide>
     <div class="swiper-pagination" slot="pagination"></div>
   </swiper>

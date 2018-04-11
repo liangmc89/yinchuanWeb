@@ -30,6 +30,7 @@ module.exports = function (ctx) {
       // extractCSS: false,
       // useNotifier: false,
       extendWebpack (cfg) {
+
       }
     },
     devServer: {
