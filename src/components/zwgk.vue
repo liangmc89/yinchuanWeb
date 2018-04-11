@@ -140,7 +140,9 @@
           direction: 'vertical',
           slidesPerView: 'auto',
           freeMode: true,
-          mousewheel: true
+          mousewheel: true,
+          observer:true,
+          observeParents:true
         },
         photoswiperOption: {
           effect: 'flip',
@@ -148,7 +150,9 @@
           autoplay: true,
           pagination: {
             el: '.swiper-pagination'
-          }
+          },
+          observer:true,
+          observeParents:true
 
         },
         topswiperOption: {
@@ -163,9 +167,12 @@
         leftswiperOption: {
           direction: 'vertical',
           slidesPerView: 'auto',
+          observer:true,
+          observeParents:true
         },
         contentswiperOption: {
-
+          observer:true,
+          observeParents:true
         }
 
       }

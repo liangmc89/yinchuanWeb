@@ -123,14 +123,18 @@
           autoplay:true,
           pagination: {
             el: '.swiper-pagination'
-          }
+          },
+          observer:true,
+          observeParents:true
 
         },
         scrollswiperOption: {
           direction: 'vertical',
           slidesPerView: 'auto',
           freeMode: true,
-          mousewheel: true
+          mousewheel: true,
+          observer:true,
+          observeParents:true,
         }
 
       }

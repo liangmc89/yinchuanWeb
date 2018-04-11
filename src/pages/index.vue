@@ -134,9 +134,9 @@
         return ResourceUrl+str;
       },
       getNewsPaper:function () {
-        console.log(this.getQueryString("csid")+'   '+this.getQueryString("pwd"));
-
-        this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
+        //console.log(this.getQueryString("csid")+'   '+this.getQueryString("pwd"));
+        this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:csid,pwd:pwd}}).then((response)=>{
+        //this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
 
             if (response.status == 200) {
 
@@ -177,8 +177,8 @@
         })
       },
       getLanmuData: function () {
-
-          this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
+       // this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
+          this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:csid,pwd:pwd}}).then((response)=>{
           if (response.status == 200) {
 
             var data=eval('(' + response.data + ')');
@@ -289,13 +289,13 @@
 </script>
 <style>
   .pageLayout {
-    /*width: 640px;*/
+    width: 640px;
     /*width: 100%;*/
-    /*height: 100%;*/
-    width: 1280px;
-    height: 1920px;
-    min-width: 640px;
-    min-height: 960px;
+    height: 100%;
+    /*width: 1280px;*/
+    /*height: 1920px;*/
+    /*min-width: 640px;*/
+    /*min-height: 960px;*/
     margin: 0 auto;
 
 
@@ -308,7 +308,7 @@
     background: rgb(34, 53, 74);
     width: 100%;
     padding: 1rem;
-    height: 10%;
+    height: 7%;
   }
 
   .logo {
@@ -319,10 +319,10 @@
 
   .pageBody {
     background: rgb(210, 210, 211);
-    height: 45%;
+    height: 48%;
   }
   .pageFoot{
-    height: 35%;
+    height: 34%;
   }
 
   .bodyContent{
@@ -335,6 +335,7 @@
   .navMenu {
     background: url("../statics/icons/menuBg.png") repeat;
     padding: 1rem;
+    height: 10%;
 
   }
 
