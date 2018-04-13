@@ -1,45 +1,38 @@
 <template>
-  <swiper :options="swiperOption" class="fit">
-    <swiper-slide :key="index*100" v-for="(item,index) in pdflist">
-     <pdf  :src="item" style="width: 100%;height: auto" ></pdf>
+  <div style="width:100%;height: 100%">
+    <q-carousel
+      color="white"
+      quick-nav
+      arrows class="fit"
+    >
+      <q-carousel-slide style="overflow: hidden" :key="i" v-for="i in Math.ceil(this.pdflist.length/2)" >
+        <div class="row no-wrap fit">
+        <div  style="width:50%;float:left;height: 100%">
+          <pdf  :src="getSrc(i,2)"></pdf>
+        </div>
+        <div style="width:50%;float:left;height: 100%">
+          <pdf  v-if="getSrc(i,1)!=''" :src="getSrc(i,1)"></pdf>
+        </div>
+        </div>
+      </q-carousel-slide>
 
-    </swiper-slide>
-    <div class="swiper-pagination" slot="pagination"></div>
-  </swiper>
+      <q-btn
+        slot="quick-nav"
+        slot-scope="props"
+        color="white"
+        flat
+        dense
+        :label="`${props.slide + 1}`"
+        @click="props.goToSlide()"
+        :class="{inactive: !props.current}"
+      />
+    </q-carousel>
 
-
-
-
-
-  <!--<div style="width:100%;height: 100%">-->
-    <!--<q-carousel-->
-      <!--color="white"-->
-      <!--quick-nav-->
-      <!--arrows-->
-    <!--&gt;-->
-      <!--<q-carousel-slide :key="i" v-for="i in totalPage" >-->
-        <!--<div class="row no-wrap">-->
-        <!--<div  style="width:50%;float:left;height: 100%"><pdf  :src="getSrc(i,2)"></pdf></div>-->
-        <!--<div style="width:50%;float:left;height: 100%"><pdf  v-if="getSrc(i,1)!=''" :src="getSrc(i,1)"></pdf></div>-->
-        <!--</div>-->
-      <!--</q-carousel-slide>-->
-
-      <!--<q-btn-->
-        <!--slot="quick-nav"-->
-        <!--slot-scope="props"-->
-        <!--color="white"-->
-        <!--flat-->
-        <!--dense-->
-        <!--:label="`${props.slide + 1}`"-->
-        <!--@click="props.goToSlide()"-->
-        <!--:class="{inactive: !props.current}"-->
-      <!--/>-->
-    <!--</q-carousel>-->
-
-  <!--</div>-->
+  </div>
 </template>
 
 <script>
+
   import pdf from 'vue-pdf'
   import 'swiper/dist/css/swiper.css'
    import {swiper, swiperSlide} from 'vue-awesome-swiper'
@@ -51,12 +44,14 @@
       swiper,
       swiperSlide
     },
+    computed:{
+
+    },
     data() {
       return {
-        isShow:false,
+        totalPage:0,
         currentPage:1,
-        totalPage:1,
-        hasSrc2:true,
+
         swiperOption: {
           slidesPerView: 2,
           spaceBetween: 2,
@@ -73,21 +68,8 @@
       }
 
 
-    },
-    mounted:function () {
-
-      // let _pageCount=this.pdflist.length;
-      // if(_pageCount>0){
-      //   if(_pageCount%2==0){
-      //     this.totalPage=_pageCount/2;
-      //   }else{
-      //     this.totalPage=Math.ceil(_pageCount/2);
-      //   }
-      //   this.currentPage=1;
-      //
-      //
-      // }
     }
+
   }
 </script>
 

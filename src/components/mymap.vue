@@ -2,39 +2,43 @@
   <div class="mymap">
     <div class="map-body relative-position">
       <div class="bus" v-if="id1==0">
+             <swiper style="height: 100%" :options="busScrollOption">
+               <swiper-slide style="height: auto">
+                 <q-btn size="xl" class="bus-btn" :key="index" v-for="(item,index) in lanmudata.dataList1[id1].dataList2"  dense color="white" text-color="primary" @click="ShowBus(index)" :label="item.Title">
+                   <q-popover :key="index"
+                              anchor="bottom left"
+                              self="top left">
+                     <div class="bus-card">
+                       <div class="bus-title row">
+                         <div class="bus-line col-6">{{item.Title}}</div><div class="bus-time col-6"></div>
+                       </div>
+                       <div class="bus-info row ">
+                         <div class="col-4" >
+                           <img class="bus-icon " :src="getUrl(item.Icon)">
+                         </div>
+                         <div class="col-8 bus-detail">
+                           运营时间：{{item.Ext1}}<br>
+                           发车时间：{{item.Ext2}}<br>
+                           起点站首末时间：{{item.Ext3}}<br>
+                           终点站首末时间：{{item.Ext4}}<br>
+                           票价信息：{{item.Ext5}}<br>
+                           汽车公司：{{item.Ext6}}<br>
+                         </div>
+                       </div>
+                       <div class="bus-stations" >
+                         <swiper :options="busswiperOption" ref="bus-swiper" style="width: 100%;padding: .5rem" class="shadow-1" >
+                           <swiper-slide style="width:auto" class="no-wrap bus-stations-slide">
+                             <div class="bus-stations-item"  :key="index" v-for="(item,index) in busStations">
+                               <div>{{index+1}}</div><div class="bus-station-circle" ></div>  <div>{{item.Title}}</div></div>
+                           </swiper-slide>
+                         </swiper>
+                       </div>
+                     </div>
+                   </q-popover>
+                 </q-btn>
+               </swiper-slide>
+             </swiper>
 
-             <q-btn class="bus-btn" :key="index" v-for="(item,index) in lanmudata.dataList1[id1].dataList2" size="xs" dense color="white" text-color="primary" @click="ShowBus(index)" :label="item.Title">
-               <q-popover
-                 anchor="bottom left"
-                 self="top left">
-                <div class="bus-card">
-                  <div class="bus-title row">
-                    <div class="bus-line col-6">{{item.Title}}</div><div class="bus-time col-6"></div>
-                  </div>
-                  <div class="bus-info row ">
-                    <div class="col-5" >
-                      <img class="bus-icon " :src="getUrl(item.Icon)">
-                    </div>
-                    <div class="col-7 bus-detail">
-                      运营时间：{{item.Ext1}}<br>
-                      发车时间：{{item.Ext2}}<br>
-                      起点站首末时间：{{item.Ext3}}<br>
-                      终点站首末时间：{{item.Ext4}}<br>
-                      票价信息：{{item.Ext5}}<br>
-                      汽车公司：{{item.Ext6}}<br>
-                    </div>
-                  </div>
-                  <div class="bus-stations" >
-                    <swiper :options="busswiperOption" ref="bus-swiper" style="width: 100%;padding: .5rem" class="shadow-1" >
-                      <swiper-slide style="width:auto" class="no-wrap bus-stations-slide">
-                          <div class="bus-stations-item"  :key="index" v-for="(item,index) in busStations">
-                            <div>{{index+1}}</div><div class="bus-station-circle" ></div>  <div>{{item.Title}}</div></div>
-                      </swiper-slide>
-                    </swiper>
-                  </div>
-                </div>
-               </q-popover>
-             </q-btn>
       </div>
       <div class="mapCard fit" v-else>
         <!--https://dafrok.github.io/vue-baidu-map/#/zh/control/geolocation-->
@@ -265,6 +269,12 @@
         busswiperOption: {
           slidesPerView: 'auto',
           spaceBetween: 10,
+        },
+        busScrollOption:{
+          direction: 'vertical',
+          slidesPerView: 'auto',
+          freeMode: true,
+          mousewheel: true
         }
 
 
@@ -280,6 +290,7 @@
   .mymap{
     height:100%;
     padding: 1rem;
+
   }
   .map{
     width: 100%;
@@ -288,23 +299,25 @@
   .map-navbtns {
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    width:  6rem;
+    width: 6rem;
     height: 6rem;
     border-radius: 1.2rem;
-    margin:0 .2rem;
     opacity: .5;
+    margin: .5rem 0;
 
   }
   .map-body{
-    height:77%;
+
+    height: 80%;
+    width: 100%;
   }
 
   .map-nav{
-
-    margin-top: .5rem;
+    border-radius: .3rem;
+    margin:0.5% 0;
     background: rgb(210, 210, 211);
-    padding: .5rem 0;
-    overflow: hidden;
+    height: auto;
+    border:1px solid rgb(182,196,211);
 
   }
 
@@ -321,6 +334,7 @@
     background:url("../statics/icons/busBg.png") no-repeat 0 0/100% 100%;
     width: 100%;
     height: 100%;
+    border:1px solid rgb(182,196,211);
   }
   .bus li{
     list-style: none;
@@ -340,7 +354,8 @@
 
   }
   .bus-card{
-    width: 30rem;
+    /*width: 30rem;*/
+    max-width: 50vw;
   }
   .bus-info img{
 

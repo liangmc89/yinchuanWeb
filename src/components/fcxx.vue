@@ -24,8 +24,8 @@
                   <div class="col-3" >
                     <img :src="getUrl(item.Icon)" style="width: 100%;height: 100%">
                   </div>
-                <div class="col-8" style="padding: 1rem;line-height: 1.8rem">
-                  <span style="font-size: 1.6rem;font-weight: 700">{{item.Title}}</span><br/>
+                <div class="col-8 fcxx-item-wrapper" >
+                  <span class="fcxx-item-title">{{item.Title}}</span><br/>
                   {{item.Ext1}}<br/>
                   {{item.Ext2}}<br/>
                   {{item.Ext3}}<br/>
@@ -39,7 +39,8 @@
 
           <swiper :options="detailswiperOption" :style="{height:swiperHeight}">
             <swiper-slide style="height: auto">
-              <p>詳情介紹</p>
+              <p class="fcxx-detail-title">详情介绍</p>
+              <p class="fcxx-house-name">{{fcxxDetail.Title}}</p>
               <p>{{fcxxDetail.Ext1}}</p>
               <p>{{fcxxDetail.Ext2}}</p>
               <p>{{fcxxDetail.Ext3}}</p>
