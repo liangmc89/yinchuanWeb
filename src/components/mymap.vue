@@ -12,7 +12,8 @@
                        <div class="bus-title row">
                          <div class="bus-line col-6">{{item.Title}}</div><div class="bus-time col-6"></div>
                        </div>
-                       <div class="bus-info row ">
+                       <div class="bus-info ">
+                         <div class="row shadow-3" style="padding: 1rem 0;background: rgb(247,250,255)">
                          <div class="col-4" >
                            <img class="bus-icon " :src="getUrl(item.Icon)">
                          </div>
@@ -24,9 +25,10 @@
                            票价信息：{{item.Ext5}}<br>
                            汽车公司：{{item.Ext6}}<br>
                          </div>
+                         </div>
                        </div>
                        <div class="bus-stations" >
-                         <swiper :options="busswiperOption" ref="bus-swiper" style="width: 100%;padding: .5rem" class="shadow-1" >
+                         <swiper :options="busswiperOption" ref="bus-swiper" style="width: 100%;padding: .5rem;background: rgb(247,250,255)" class="shadow-3" >
                            <swiper-slide style="width:auto" class="no-wrap bus-stations-slide">
                              <div class="bus-stations-item"  :key="index" v-for="(item,index) in busStations">
                                <div>{{index+1}}</div><div class="bus-station-circle" ></div>  <div>{{item.Title}}</div></div>

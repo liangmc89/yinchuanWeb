@@ -36,13 +36,12 @@
         </swiper>
       </div>
       <div class="content-container col-6 " >
-        <swiper :options="scrollswiperOption"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3!=undefined" style="padding: .5rem;border-radius: .3rem;height:39vh" :key="id2" class="shadow-3">
-          <swiper-slide    style="padding: .2rem;height: auto"  >
+        <swiper :options="scrollswiperOption"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3!=undefined" style="padding:2rem;border-radius: .3rem;height:39vh" :key="id2" class="shadow-3">
+          <swiper-slide    style="height: auto"  >
             <swiper :options="photoswiperOption" >
               <swiper-slide :key="index"  v-for="(item,index) in lanmudata.dataList1[id1].dataList2[id2].dataList3">
                 <q-card :key="item.ID"  style="margin-bottom: 1rem"   >
                   <q-card-media>
-                <!--<img src="http://111.113.15.126:3307/upload/201609/1a95281359f34abc8dfb1a7dc9e5217b.jpg">-->
                     <img v-if="item.Path!=undefined" :src="getUrl(item.Path)">
                     <q-card-title slot="overlay">
                       <span class="c-title">{{item.Title}}</span>

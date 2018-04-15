@@ -1,7 +1,6 @@
 <template>
   <q-page>
-
-    <div class="pageLayout">
+    <div class="pageLayout non-selectable" @click="CloseSaver">
       <div class="pageHeader">
         <div class="logo" @click="refresh">
 
@@ -17,7 +16,7 @@
             <!--leave-active-class="animated fadeOut"-->
             <!--&gt;-->
 
-            <!--<pdfplayer v-show="currentNav==0" :pdflist="RBpdflist"></pdfplayer>-->
+
             <!--吃在银川 lanmuid:68-->
             <Yzyc v-if="currentNav==68" :key="68" :lanmudata="lanmu"></Yzyc>
             <!--游在银川 lanmuid:68-->
@@ -47,9 +46,10 @@
             <!--银川日报 LanmuID：35-->
             <pdfplayer v-show="currentNav==35" :key="35" :pdflist="RBpdflist"></pdfplayer>
             <!--银川晚报 LanmuID：31-->
-            <pdfplayer v-show="currentNav==31" :key="31" :pdflist="RBpdflist"></pdfplayer>
+            <pdfplayer v-show="currentNav==31" :key="31" :pdflist="WBpdflist"></pdfplayer>
             <!--<contentplayer></contentplayer>-->
-
+            <!--视屏点播 LanmuID：21-->
+             <videoplayer v-if="currentNav==21" :lanmudata="lanmu"></videoplayer>
             <!--</transition>-->
           </div>
 
@@ -75,21 +75,42 @@
           <div class="swiper-button-next ss" style="right: 0" slot="button-next"></div>
         </div>
 
-        <!--<div class="screensaver">-->
-        <!--</div>-->
+        <div class="screensaver" v-show="isSaver">
+          <q-carousel
+            color="white"
+            infinite
+            :autoplay="10000"
+
+          >
+            <q-carousel-slide :key="index" v-for="(item,index) in RBpdflist">
+              <pdf  :src="item"></pdf>
+            </q-carousel-slide>
+
+          </q-carousel>
+        </div>
 
       </div>
       <div class="pageFoot">
-        <video :src="videolist[currentVideoIndex]" muted id="myVideo" ref="myVideo" autoplay preload="auto"
-               @ended="nextVideo">
+        <!--<video-player class="video-player-box"-->
+                      <!--ref="IndexvideoPlayer"-->
+                      <!--:options="indexplayerOptions"-->
+                      <!--customEventName="changed"-->
+                      <!--@ready="playerIsReady"-->
+                      <!--@ended="nextVideo"-->
+                      <!--@changed="playerStateChanged($event)">-->
+        <!--</video-player>-->
 
-        </video>
+        <!--<video :src="videolist[currentVideoIndex]" muted id="myVideo" ref="myVideo" autoplay preload="auto"-->
+               <!--@ended="nextVideo">-->
+
+        <!--</video>-->
       </div>
     </div>
 
   </q-page>
 </template>
 <script>
+  import pdf from 'vue-pdf'
   import {ResourceUrl, csid, pwd} from '../config/config.js'
   import mymap from '../components/mymap.vue'
   import pdfplayer from '../components/pdfplayer.vue'
@@ -99,6 +120,7 @@
   import Yzyc from "../components/yzyc.vue"
   import Fcxx from "../components/fcxx.vue"
   import Zwgk from '../components/zwgk.vue'
+  import Videoplayer from '../components/videoplayer'
 
 
   export default {
@@ -112,12 +134,38 @@
       mymap,
       Yzyc,
       Fcxx,
-      Zwgk
+      Zwgk,
+      Videoplayer,
+      pdf
+
 
     },
     filters: {},
+    computed:{
+      // player() {
+      //   return this.$refs.IndexvideoPlayer.player
+      // }
+    },
     methods: {
-
+      // playerStateChanged(playerCurrentState) {
+      //   // console.log('example 2: state changed', playerCurrentState)
+      // },
+      // playerIsReady(player) {
+      //
+      //   // player.hotkeys({
+      //   //   volumeStep: 0.1,
+      //   //   seekStep: 5,
+      //   //   enableModifiersForNumbers: false,
+      //   //   fullscreenKey: function(event, player) {
+      //   //     // override fullscreen to trigger when pressing the F key or Ctrl+Enter
+      //   //     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
+      //   //   }
+      //   // })
+      // },
+      CloseSaver:function () {
+        this.isSaver=false;
+        this.saverStart=0;
+      },
       refresh: function () {
         window.location.reload();
       },
@@ -129,19 +177,46 @@
         }
         return null;
       },
-
       getUrl: function (str) {
         if (!str) return '';
         return ResourceUrl + str;
       },
-
-
       getAd: function () {
+        let self=this;
         this.$axios.get('/Service/h5/h5AD.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
           if (response.status == 200) {
             var data = response.data;
-            // this.videolist=data;
             console.log(data);
+            data.forEach((item)=> {
+              console.log(item.FileName);
+              this.videolist.push({src:this.getUrl(item.FileName)});
+            });
+            // this.videolist=data;
+            console.log(self)
+           // self.indexplayerOptions= {
+           //    // height: 'auto',
+           //    fluid:true,
+           //      preload:true,
+           //    autoplay: true,
+           //    contorl:false,
+           //    controlBar: null,
+           //    sources:[self.videolist[self.currentVideoIndex]],
+           //    // sources: [
+           //    //   {
+           //    //     type:'video/mp4',
+           //    //     src:'http://occcudapv.bkt.clouddn.com/guchenghu/bb7c6e4c-e62e-4ea7-bdc9-f9ce3a678274.mp4'
+           //    //   },{
+           //    //   // mp4
+           //    //   // type: 'video/mp4',
+           //    //   // src: 'http://vjs.zencdn.net/v/oceans.mp4',
+           //    //   // flv
+           //    //   type: 'video/x-flv',
+           //    //   src: 'http://fms.cntv.lxdns.com/live/flv/channel96.flv'
+           //    // }],
+           //    language: 'zh-CN',
+           //    techOrder: ['html5','flash'],
+           //    // poster: "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-6.jpg"
+           //  }
 
           } else {
 
@@ -244,7 +319,15 @@
           });
         })
       },
-
+      ScreenSaver:function () {
+        //屏保为180S
+        setInterval(()=>{
+          this.saverStart++;
+          if(this.saverStart>60){
+            this.isSaver=true;
+          }
+        },3000);
+      },
       navBtnClick: function (index, item) {
 
         this.currentNav = item.LanmuID;
@@ -263,26 +346,27 @@
         } else {
           this.currentVideoIndex = 0;
         }
-        this.$refs.myVideo.play();
+       console.log(this.videolist[this.currentVideoIndex]);
       }
     },
     mounted: function () {
+      this.ScreenSaver();
       this.getLanmuData();
       this.getNewsPaper();
       this.getAd();
     },
     data() {
       return {
+        saverStart:0,
+        isSaver:false,
         currentNav: "",
         lanmu: [],
         lanmuData: [],
         lanmuList: [],//栏目列表
         LanumID: 0,//当前栏目
         currentVideoIndex: 0,
-        videolist: ['http://occcudapv.bkt.clouddn.com/guchenghu/bb7c6e4c-e62e-4ea7-bdc9-f9ce3a678274.mp4'
-//          ,
-//                 'http://vjs.zencdn.net/v/oceans.mp4'
-        ],
+        videolist:[],
+        //videolist: ['http://occcudapv.bkt.clouddn.com/guchenghu/bb7c6e4c-e62e-4ea7-bdc9-f9ce3a678274.mp4', 'http://vjs.zencdn.net/v/oceans.mp4'],
         swiperOption: {
           slidesPerView: "auto",
           spaceBetween: 10,
@@ -292,6 +376,7 @@
           }
 
         },
+        indexplayerOptions: {},
         RBpdflist: [],
         WBpdflist: []
       }
@@ -335,25 +420,26 @@
 
   .pageFoot {
     height: 33%;
+    width:100%;
   }
 
   .bodyContent {
     width: 100%;
     height: 85%;
-    padding: 1rem;
-
+    padding: 1.5rem;
   }
 
   .navMenu {
     background: url("../statics/icons/menuBg.png") repeat;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     height: auto;
 
   }
 
   .content-container {
     border-radius: .3rem;
-    background-color: white;
+    background: white;
+
 
   }
 

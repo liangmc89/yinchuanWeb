@@ -5,7 +5,9 @@ module.exports = function (ctx) {
     // app plugins (/src/plugins)
     plugins: [
       'axios',
-      'baidumap'
+      'baidumap',
+      'videojs',
+      'swiper'
     ],
     css: [
       'app.styl'

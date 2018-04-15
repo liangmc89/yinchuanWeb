@@ -54,9 +54,7 @@
                   <div style="padding: 1rem 2rem"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3">
                     <img :key="idx" style="width: 100%;height: auto" :src="getUrl(img.Path)" v-for="(img,idx) in lanmudata.dataList1[id1].dataList2[id2].dataList3"/>
                   </div>
-
-
-                  <div style="padding: 2rem">{{item.content}}</div>
+                  <pre style="padding: 2rem" class="c-text">{{item.content}}</pre>
                 </swiper-slide>
               </swiper>
             </swiper-slide>
