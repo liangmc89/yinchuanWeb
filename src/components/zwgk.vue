@@ -36,7 +36,7 @@
       </div>
       <div class="zwgk-content-body row" >
         <div class="zwgk-left-nav col-3">
-          <swiper :options="leftswiperOption" style="height: 35vh" :key="id1">
+          <swiper :options="leftswiperOption" style="height: 37vh" :key="id1">
             <swiper-slide style="height: auto" :key="index" :class="[index==id2?'leftNav-focus':'']"
                           v-for="(item,index) in lanmudata.dataList1[id1].dataList2" >
                   <div class="leftNavOut"  @click="leftNavClick(item,index)">
@@ -46,10 +46,10 @@
           </swiper>
         </div>
         <div class="zwgk-detail col-9">
-          <swiper  :options="contentswiperOption" ref="contentSwiper" @slideChange="slideChange" style="height: 36vh">
+          <swiper  :options="contentswiperOption" ref="contentSwiper" @slideChange="slideChange" style="height: 37vh">
             <swiper-slide :key="index" v-for="(item,index) in lanmudata.dataList1[id1].dataList2">
               <p class="detail-title">{{item.Title}}</p>
-              <swiper :options="contentScrollOptions" style="height: 30vh" >
+              <swiper :options="contentScrollOptions" style="height: 31vh" >
                 <swiper-slide style="height: auto">
                   <div style="padding: 1rem 2rem"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3">
                     <img :key="idx" style="width: 100%;height: auto" :src="getUrl(img.Path)" v-for="(img,idx) in lanmudata.dataList1[id1].dataList2[id2].dataList3"/>

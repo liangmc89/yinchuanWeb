@@ -21,7 +21,7 @@
       <swiper :options="scrollswiperOption" :style="{height:swiperHeight}" v-if="isShow">
             <swiper-slide v-ripple  :key="index" :class="[index==id2?'secondNav-focus':'']"  v-for="(item,index) in lanmudata.dataList1[id1].dataList2"  >
               <div class="fcxx-secondNav row" style="height: 95%" @click="secondNavClick(item,index)">
-                  <div class="col-3" >
+                  <div class="col-3 overflow-hidden" >
                     <img :src="getUrl(item.Icon)" style="width: 100%;height: 100%">
                   </div>
                 <div class="col-8 fcxx-item-wrapper" >
@@ -38,18 +38,18 @@
         <div class="fcxx-detail relative-position" v-show="!isShow">
 
           <swiper :options="detailswiperOption" :style="{height:swiperHeight}">
-            <swiper-slide style="height: auto">
+            <swiper-slide style="height: auto" class="fcxx-text">
               <p class="fcxx-detail-title">详情介绍</p>
               <p class="fcxx-house-name">{{fcxxDetail.Title}}</p>
-              <p>{{fcxxDetail.Ext1}}</p>
-              <p>{{fcxxDetail.Ext2}}</p>
-              <p>{{fcxxDetail.Ext3}}</p>
-              <p>{{fcxxDetail.Ext4}}</p>
-              <p>{{fcxxDetail.Ext5}}</p>
-              <p>{{fcxxDetail.Ext6}}</p>
-              <p>{{fcxxDetail.Ext7}}</p>
-              <p>{{fcxxDetail.Ext8}}</p>
-              <p>{{fcxxDetail.Ext9}}</p>
+              {{fcxxDetail.Ext1}}<br>
+              {{fcxxDetail.Ext2}}<br>
+              {{fcxxDetail.Ext3}}<br>
+              {{fcxxDetail.Ext4}}<br>
+              {{fcxxDetail.Ext5}}<br>
+              {{fcxxDetail.Ext6}}<br>
+              {{fcxxDetail.Ext7}}<br>
+              {{fcxxDetail.Ext8}}<br>
+              {{fcxxDetail.Ext9}}<br>
               <swiper :options="photoswiperOption">
                 <swiper-slide :key="index" v-for="(item,index) in fcxxDetail.dataList3">
                   <img :src="getUrl(item.Icon)"/>

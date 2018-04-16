@@ -22,7 +22,7 @@
       <hr class="content-hr">
       <div class="row" >
       <div class="content-title col-6"   >
-        <swiper :options="scrollswiperOption" style="height:40vh" >
+        <swiper :options="scrollswiperOption" style="height:35vh" >
           <swiper-slide style="height: auto" >
             <div class="secondNav"  >
               <ul>
@@ -36,7 +36,7 @@
         </swiper>
       </div>
       <div class="content-container col-6 " >
-        <swiper :options="scrollswiperOption"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3!=undefined" style="padding:2rem;border-radius: .3rem;height:39vh" :key="id2" class="shadow-3">
+        <swiper :options="scrollswiperOption"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3!=undefined" style="padding:2rem;border-radius: .3rem;height:35vh" :key="id2" class="shadow-3">
           <swiper-slide    style="height: auto"  >
             <swiper :options="photoswiperOption" >
               <swiper-slide :key="index"  v-for="(item,index) in lanmudata.dataList1[id1].dataList2[id2].dataList3">

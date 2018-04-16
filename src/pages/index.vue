@@ -5,6 +5,10 @@
         <div class="logo" @click="refresh">
 
         </div>
+        <div class="weather">
+          <iframe src="//www.seniverse.com/weather/weather.aspx?uid=U192E82C80&cid=CHNX000000&l=zh-CHS&p=SMART&a=1&u=C&s=11&m=0&x=1&d=0&fc=FFFFFF&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="200" height="300" allowTransparency="true"></iframe>
+        </div>
+        <div class="weather-layer"></div>
         <!--<img src="../statics/icons/logo.png"/>-->
       </div>
       <div class="pageBody relative-position">
@@ -90,20 +94,17 @@
         </div>
 
       </div>
-      <div class="pageFoot">
-        <!--<video-player class="video-player-box"-->
-                      <!--ref="IndexvideoPlayer"-->
-                      <!--:options="indexplayerOptions"-->
-                      <!--customEventName="changed"-->
-                      <!--@ready="playerIsReady"-->
-                      <!--@ended="nextVideo"-->
-                      <!--@changed="playerStateChanged($event)">-->
-        <!--</video-player>-->
-
-        <!--<video :src="videolist[currentVideoIndex]" muted id="myVideo" ref="myVideo" autoplay preload="auto"-->
-               <!--@ended="nextVideo">-->
-
-        <!--</video>-->
+      <div class="pageFoot" >
+        <div class="fit">
+        <video-player  style="height: 100%;width: 100%"
+                       ref="homevideoPlayer"
+                       :options="homeplayerOptions"
+                       @ended="nextVideo"
+                       @error="nextVideo"
+                       @pause="onPlayerPause($event)"
+                       customEventName="changed">
+        </video-player>
+        </div>
       </div>
     </div>
 
@@ -142,26 +143,13 @@
     },
     filters: {},
     computed:{
-      // player() {
-      //   return this.$refs.IndexvideoPlayer.player
-      // }
+      player() {
+        return this.$refs.homevideoPlayer.player
+      }
     },
     methods: {
-      // playerStateChanged(playerCurrentState) {
-      //   // console.log('example 2: state changed', playerCurrentState)
-      // },
-      // playerIsReady(player) {
-      //
-      //   // player.hotkeys({
-      //   //   volumeStep: 0.1,
-      //   //   seekStep: 5,
-      //   //   enableModifiersForNumbers: false,
-      //   //   fullscreenKey: function(event, player) {
-      //   //     // override fullscreen to trigger when pressing the F key or Ctrl+Enter
-      //   //     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-      //   //   }
-      //   // })
-      // },
+
+
       CloseSaver:function () {
         this.isSaver=false;
         this.saverStart=0;
@@ -186,37 +174,18 @@
         this.$axios.get('/Service/h5/h5AD.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
           if (response.status == 200) {
             var data = response.data;
-            console.log(data);
             data.forEach((item)=> {
               console.log(item.FileName);
-              this.videolist.push({src:this.getUrl(item.FileName)});
+              this.videolist.push({src:this.getUrl(item.FileName),poster:this.getUrl(item.Icon)});
             });
-            // this.videolist=data;
-            console.log(self)
-           // self.indexplayerOptions= {
-           //    // height: 'auto',
-           //    fluid:true,
-           //      preload:true,
-           //    autoplay: true,
-           //    contorl:false,
-           //    controlBar: null,
-           //    sources:[self.videolist[self.currentVideoIndex]],
-           //    // sources: [
-           //    //   {
-           //    //     type:'video/mp4',
-           //    //     src:'http://occcudapv.bkt.clouddn.com/guchenghu/bb7c6e4c-e62e-4ea7-bdc9-f9ce3a678274.mp4'
-           //    //   },{
-           //    //   // mp4
-           //    //   // type: 'video/mp4',
-           //    //   // src: 'http://vjs.zencdn.net/v/oceans.mp4',
-           //    //   // flv
-           //    //   type: 'video/x-flv',
-           //    //   src: 'http://fms.cntv.lxdns.com/live/flv/channel96.flv'
-           //    // }],
-           //    language: 'zh-CN',
-           //    techOrder: ['html5','flash'],
-           //    // poster: "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-6.jpg"
-           //  }
+
+            if(data.length>0){
+              this.homeplayerOptions.sources=[this.videolist[this.currentVideoIndex]];
+              console.log(this.player)
+              //this.player.play();
+            }
+
+
 
           } else {
 
@@ -335,8 +304,11 @@
           return x.LanmuID == item.LanmuID;
         })[0];
         console.log(this.lanmu);
-        //this.lanmuData={ lanmuId:item.LanmuID,dataList1:this.dataList1,dataList2:this.dataList2,dataList3:this.dataList3};
 
+
+      },
+      onPlayerPause(e){
+       this.player.play()
       },
       nextVideo: function () {
 
@@ -346,7 +318,8 @@
         } else {
           this.currentVideoIndex = 0;
         }
-       console.log(this.videolist[this.currentVideoIndex]);
+       this.homeplayerOptions.sources=[this.videolist[this.currentVideoIndex]];
+        this.player.play()
       }
     },
     mounted: function () {
@@ -366,7 +339,16 @@
         LanumID: 0,//当前栏目
         currentVideoIndex: 0,
         videolist:[],
-        //videolist: ['http://occcudapv.bkt.clouddn.com/guchenghu/bb7c6e4c-e62e-4ea7-bdc9-f9ce3a678274.mp4', 'http://vjs.zencdn.net/v/oceans.mp4'],
+        homeplayerOptions: {
+          playToggle:false,
+          autoplay: true,
+          bigPlayButton:false,
+          controlBar:false,
+          sources: [],
+          language: 'zh-CN',
+          techOrder: ['html5','flash'],
+          //poster: this.getUrl(this.lanmudata.dataList1[0].Icon)
+        },
         swiperOption: {
           slidesPerView: "auto",
           spaceBetween: 10,
@@ -376,7 +358,6 @@
           }
 
         },
-        indexplayerOptions: {},
         RBpdflist: [],
         WBpdflist: []
       }
@@ -402,8 +383,9 @@
   .pageHeader {
     background: rgb(34, 53, 74);
     width: 100%;
-    padding: 1rem;
-    height: 7%;
+    padding: 2rem;
+    height: 6%;
+    position:relative;
   }
 
   .logo {
@@ -411,15 +393,16 @@
     width: 30%;
     max-width: 200px;
     height: 100%;
+
   }
 
   .pageBody {
     background: rgb(210, 210, 211);
-    height: 60%;
+    height: 50%;
   }
 
   .pageFoot {
-    height: 33%;
+    height: 44%;
     width:100%;
   }
 

@@ -44,7 +44,7 @@
       </div>
       <div class="mapCard fit" v-else>
         <!--https://dafrok.github.io/vue-baidu-map/#/zh/control/geolocation-->
-        <baidu-map class="map" :enableMapClick="false" :center="center" :zoom="zoom" @ready="handler">
+        <baidu-map class="map" ref="map" :map-click="false"  :center="center" :zoom="zoom" @ready="handler">
           <!--比例尺-->
           <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
           <!--缩放-->
@@ -56,9 +56,11 @@
 
           </bm-marker>
           <bm-info-window :position="{lng: currentPoint.lng, lat: currentPoint.lat}" title="" :show="isShowInfo" @close="infoWindowClose" @open="infoWindowOpen">
+            <div class="info-window-font">
             <p>{{currentPoint.title}}</p>
             <p>地址：{{currentPoint.address}}</p>
             <p>电话：{{currentPoint.tel}}</p>
+            </div>
           </bm-info-window>
 
 
@@ -113,6 +115,7 @@
   export default {
     props: ["lanmudata"],
     methods: {
+
       ShowBus: function (index) {
         this.id2 = index;
         this.busStations = this.lanmudata.dataList1[this.id1].dataList2[this.id2].dataList3.sort(function (a, b) {
@@ -137,9 +140,16 @@
       },
       handler({BMap, map}) {
         console.log(BMap, map)
-        this.center.lng = 106.252474
-        this.center.lat = 38.477826
-        this.zoom = 13
+        this.center.lng = 106.252474;
+        this.center.lat = 38.477826;
+        this.zoom = 13;
+        let a= document.getElementsByClassName(' anchorBL');
+        a.forEach(function () {
+          a.find
+        })
+
+        console.log(a);
+
       },
       PointClick: function (item) {
         if (item != undefined) {
@@ -289,6 +299,9 @@
 </script>
 
 <style>
+  .info-window-font{
+    font-size: 1.8rem;
+  }
   .mymap{
     height:100%;
     padding: 1rem;

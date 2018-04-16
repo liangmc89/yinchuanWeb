@@ -46,7 +46,7 @@
           sources: [{src:this.getUrl(this.lanmudata.dataList1[0].Path)}],
           language: 'zh-CN',
           techOrder: ['html5','flash'],
-           poster: this.getUrl(this.lanmudata.dataList1[0].Icon)
+           //poster: this.getUrl(this.lanmudata.dataList1[0].Icon)
         }
       }
     },
@@ -81,10 +81,7 @@
   }
 </script>
 <style>
-  div[id^='vjs_video']{
-    width: 100% !important;
-    height: 100% !important;
-  }
+
 
   .video-player{
     height: 80%;
@@ -114,16 +111,6 @@
     font-size: 1.8rem;
 
   }
-  .vjs-big-play-button{
-    top: 50% !important;
-    left: 50% !important;
-    margin-left: -1.5em;
-    margin-top: -1em;
-    background-color: rgba(0,0,0,.45);
-    font-size: 3.5em;
-    height: 2em!important;
-    line-height: 2em!important;
-    margin-top: -1em!important;
-  }
+
 
 </style>
