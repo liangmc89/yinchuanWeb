@@ -2,13 +2,20 @@
   <q-page>
     <div class="pageLayout non-selectable" @click="CloseSaver">
       <div class="pageHeader">
-        <div class="logo" @click="refresh">
-
-        </div>
+            <div class="logo" @click="refresh"></div>
         <div class="weather">
-          <iframe src="//www.seniverse.com/weather/weather.aspx?uid=U192E82C80&cid=CHNX000000&l=zh-CHS&p=SMART&a=1&u=C&s=11&m=0&x=1&d=0&fc=FFFFFF&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="200" height="300" allowTransparency="true"></iframe>
+          <iframe src="//www.seniverse.com/weather/weather.aspx?uid=U192E82C80&cid=CHNX000000&l=zh-CHS&p=SMART&a=1&u=C&s=11&m=0&x=1&d=0&fc=FFFFFF&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="200" height="auto" allowTransparency="true"></iframe>
+          <div class="weather-layer"></div>
         </div>
-        <div class="weather-layer"></div>
+
+        <div class="date">
+          <div class="data-day">
+            <div class="date-date">{{time_date}}</div>
+            <div class="date-week">{{time_week}}</div>
+          </div>
+          <div class="date-time">{{time_time}}</div>
+        </div>
+
         <!--<img src="../statics/icons/logo.png"/>-->
       </div>
       <div class="pageBody relative-position">
@@ -83,10 +90,10 @@
           <q-carousel
             color="white"
             infinite
-            :autoplay="10000"
-
+            :autoplay="3000"
+            class="saver-carousel"
           >
-            <q-carousel-slide :key="index" v-for="(item,index) in RBpdflist">
+            <q-carousel-slide class="saver-slide" :key="index" v-for="(item,index) in RBpdflist">
               <pdf  :src="item"></pdf>
             </q-carousel-slide>
 
@@ -148,8 +155,23 @@
       }
     },
     methods: {
-
-
+      datePad:function (s) {
+        let result;
+        if(s<10){
+          result='0'+s;
+        }else{
+          result=s;
+        }
+        return result;
+      },
+      ShowClock:function () {
+        setInterval(()=>{
+          let d=new Date();
+          this.time_date=d.getFullYear() + "年" +(d.getMonth() + 1) + "月" + d.getDate() + "日";
+          this.time_week=' 星期'+'日一二三四五六'.charAt(d.getDay());
+          this.time_time=this.datePad(d.getHours())+':'+this.datePad(d.getMinutes())+":"+this.datePad(d.getSeconds());
+        },1000);
+      },
       CloseSaver:function () {
         this.isSaver=false;
         this.saverStart=0;
@@ -327,9 +349,13 @@
       this.getLanmuData();
       this.getNewsPaper();
       this.getAd();
+      this.ShowClock();
     },
     data() {
       return {
+        time_date:'',
+        time_week:'',
+        time_time:'',
         saverStart:0,
         isSaver:false,
         currentNav: "",
@@ -386,6 +412,7 @@
     padding: 2rem;
     height: 6%;
     position:relative;
+    overflow: hidden;
   }
 
   .logo {
@@ -393,6 +420,7 @@
     width: 30%;
     max-width: 200px;
     height: 100%;
+    float: left;
 
   }
 
