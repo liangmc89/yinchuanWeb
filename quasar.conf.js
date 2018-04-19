@@ -7,7 +7,8 @@ module.exports = function (ctx) {
       'axios',
       'baidumap',
       'videojs',
-      'swiper'
+      'swiper',
+      'viewer'
     ],
     css: [
       'app.styl'

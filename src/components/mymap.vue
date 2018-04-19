@@ -143,12 +143,7 @@
         this.center.lng = 106.252474;
         this.center.lat = 38.477826;
         this.zoom = 13;
-        let a= document.getElementsByClassName(' anchorBL');
-        a.forEach(function () {
-          a.find
-        })
 
-        console.log(a);
 
       },
       PointClick: function (item) {
@@ -299,6 +294,14 @@
 </script>
 
 <style>
+
+  .BMap_cpyCtrl {
+    display: none;
+  }
+
+  .anchorBL {
+    display: none;
+  }
   .info-window-font{
     font-size: 1.8rem;
   }

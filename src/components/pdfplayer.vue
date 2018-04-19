@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%;height: 100%">
+  <div style="width:100%;height: 100%" class="images" v-viewer="{movable: true,fullscreen: false}">
     <q-carousel
       color="white"
       quick-nav
@@ -8,10 +8,13 @@
       <q-carousel-slide style="overflow: hidden" :key="i" v-for="i in Math.ceil(this.pdflist.length/2)" >
         <div class="row no-wrap fit">
         <div  style="width:50%;float:left;height: 100%">
-          <pdf  :src="getSrc(i,2)"></pdf>
+          <!--<pdf  :src="getSrc(i,2)"></pdf>-->
+          <img @click="show" src="http://mirari.cc/v-viewer/assets/img/losglaciares_1920_1200_ss_01.6e6dbb9.jpg">
         </div>
         <div style="width:50%;float:left;height: 100%">
-          <pdf  v-if="getSrc(i,1)!=''" :src="getSrc(i,1)"></pdf>
+          <!--<pdf  v-if="getSrc(i,1)!=''" :src="getSrc(i,1)"></pdf>-->
+          <!--<img @click="show" src="http://mirari.cc/v-viewer/assets/img/losglaciares_1920_1200_ss_02.4ad7195.jpg">-->
+          <img @click="show" src="../statics/icons/0001.jpg">
         </div>
         </div>
       </q-carousel-slide>
@@ -65,6 +68,10 @@
     methods:{
       getSrc:function (pageIndex,pdfIndex) {
         return  this.pdflist[2*pageIndex-pdfIndex]||"";
+      },
+      show () {
+        const viewer = this.$el.querySelector('.images').$viewer
+        viewer.show()
       }
 
 

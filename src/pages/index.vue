@@ -55,7 +55,8 @@
             <!--地图指引 LanmuID：24-->
             <mymap v-if="currentNav==24" :key="24" :lanmudata="lanmu"></mymap>
             <!--银川日报 LanmuID：35-->
-            <pdfplayer v-show="currentNav==35" :key="35" :pdflist="RBpdflist"></pdfplayer>
+            <!--<pdfplayer v-show="currentNav==35" :key="35" :pdflist="RBpdflist"></pdfplayer>-->
+            <newsplayer v-show="currentNav==35" :key="35" :pdflist="RBpdflist"></newsplayer>
             <!--银川晚报 LanmuID：31-->
             <pdfplayer v-show="currentNav==31" :key="31" :pdflist="WBpdflist"></pdfplayer>
             <!--<contentplayer></contentplayer>-->
@@ -129,6 +130,7 @@
   import Fcxx from "../components/fcxx.vue"
   import Zwgk from '../components/zwgk.vue'
   import Videoplayer from '../components/videoplayer'
+  import Newsplayer from '../components/newsplayer'
 
 
   export default {
@@ -144,7 +146,8 @@
       Fcxx,
       Zwgk,
       Videoplayer,
-      pdf
+      pdf,
+      Newsplayer
 
 
     },
@@ -224,6 +227,7 @@
           if (response.status == 200) {
 
             var data = response.data;
+
             //日报
             var dayNews = data.filter(function (x) {
               return x.PublishType == 1 && x.LayoutType == 1;
@@ -256,7 +260,7 @@
         })
       },
       getLanmuData: function () {
-        debugger
+//        debugger
         this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
         //this.$axios.get('/Service/h5/LanmuData.ashx', {params: {csid: this.$route.params.csid, pwd: this.$route.params.pwd}}).then((response) => {
           if (response.status == 200) {
