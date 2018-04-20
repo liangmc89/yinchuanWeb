@@ -56,12 +56,16 @@
             <mymap v-if="currentNav==24" :key="24" :lanmudata="lanmu"></mymap>
             <!--银川日报 LanmuID：35-->
             <!--<pdfplayer v-show="currentNav==35" :key="35" :pdflist="RBpdflist"></pdfplayer>-->
-            <newsplayer v-show="currentNav==35" :key="35" :pdflist="RBpdflist"></newsplayer>
-            <!--银川晚报 LanmuID：31-->
-            <pdfplayer v-show="currentNav==31" :key="31" :pdflist="WBpdflist"></pdfplayer>
-            <!--<contentplayer></contentplayer>-->
             <!--视屏点播 LanmuID：21-->
-             <videoplayer v-if="currentNav==21" :lanmudata="lanmu"></videoplayer>
+            <videoplayer v-if="currentNav==21" :lanmudata="lanmu"></videoplayer>
+
+            <newsplayer v-if="currentNav==35"  :key="35" :pdflist="RBpdflist"></newsplayer>
+
+            <!--银川晚报 LanmuID：31-->
+            <newsplayer v-if="currentNav==31"  :key="35" :pdflist="WBpdflist"></newsplayer>
+            <!--<pdfplayer  :key="31" :pdflist="WBpdflist"></pdfplayer>-->
+            <!--<contentplayer></contentplayer>-->
+
             <!--</transition>-->
           </div>
 
@@ -104,14 +108,15 @@
       </div>
       <div class="pageFoot" >
         <div class="fit">
-        <video-player  style="height: 100%;width: 100%"
-                       ref="homevideoPlayer"
-                       :options="homeplayerOptions"
-                       @ended="nextVideo"
-                       @error="nextVideo"
-                       @pause="onPlayerPause($event)"
-                       customEventName="changed">
-        </video-player>
+          <video style="height: 100%;width: 100%" controls autoplay src="http://occcudapv.bkt.clouddn.com/guchenghu/bb7c6e4c-e62e-4ea7-bdc9-f9ce3a678274.mp4"></video>
+        <!--<video-player  style="height: 100%;width: 100%"-->
+                       <!--ref="homevideoPlayer"-->
+                       <!--:options="homeplayerOptions"-->
+                       <!--@ended="nextVideo"-->
+                       <!--@error="nextVideo"-->
+                       <!--@pause="onPlayerPause($event)"-->
+                       <!--customEventName="changed">-->
+        <!--</video-player>-->
         </div>
       </div>
     </div>
@@ -200,15 +205,17 @@
           if (response.status == 200) {
             var data = response.data;
             data.forEach((item)=> {
-              console.log(item.FileName);
+              //console.log(item.FileName);
               this.videolist.push({src:this.getUrl(item.FileName),poster:this.getUrl(item.Icon)});
             });
 
             if(data.length>0){
               this.homeplayerOptions.sources=[this.videolist[this.currentVideoIndex]];
-              console.log(this.player)
+              //console.log(this.player)
               //this.player.play();
             }
+
+           // console.log(this.videolist);
 
 
 
@@ -295,8 +302,8 @@
               });
               lanmuList.push(obj);
             });
-            //console.log(lanmuList);
-            console.log(lanmuList)
+
+            //console.log(lanmuList)
             this.lanmuData = lanmuList;
             this.currentNav = lanmuList[0].LanmuID;
           } else {
@@ -321,8 +328,9 @@
         //屏保为180S
         setInterval(()=>{
           this.saverStart++;
-          if(this.saverStart>60){
-            this.isSaver=true;
+          if(this.saverStart>6){
+            //this.isSaver=true;
+            this.currentNav=35;
           }
         },3000);
       },
@@ -332,7 +340,7 @@
         this.lanmu = this.lanmuData.filter((x) => {
           return x.LanmuID == item.LanmuID;
         })[0];
-        console.log(this.lanmu);
+        //console.log(this.lanmu);
 
 
       },
@@ -352,7 +360,7 @@
       }
     },
     mounted: function () {
-      this.ScreenSaver();
+      ;this.ScreenSaver();
       this.getLanmuData();
       this.getNewsPaper();
       this.getAd();

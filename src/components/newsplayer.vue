@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 100%;width: 100%">
+
     <viewer :options="options" :images="pdflist"
             @inited="inited"
             class="viewer" ref="viewer"
@@ -9,7 +9,8 @@
                  :src="src">
       </template>
     </viewer>
-    </div>
+
+
     <!--<button type="button" @click="show">Show</button>-->
 
 </template>
@@ -38,22 +39,38 @@
           transition: true,
           fullscreen: false,
           keyboard: true,
+          interval:30000,
           url: "data-source"
         }
       }
     },
     methods: {
       inited(viewer) {
-        this.$viewer = viewer
-        this.$viewer.play();
+        this.$viewer = viewer;
+
+
       },
       show() {
-        this.$viewer.show()
+
       }
+    },
+    mounted:function () {
+      setTimeout(()=>{
+        this.$viewer.play();
+      },3000);
     }
+
   }
 </script>
 <style >
+  .viewer{
+    width: 100%;
+    height: 100%;
+    background: url("../statics/icons/NewspaperBg.jpg") no-repeat 0 0/100% 100%;
+  }
 
+  .viewer-player{
+    background: url("../statics/icons/NewspaperBg.jpg") no-repeat 0 0/100% 100% !important;
+  }
 
 </style>
