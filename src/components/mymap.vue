@@ -307,7 +307,8 @@
   }
   .mymap{
     height:100%;
-    padding: 1rem;
+
+
 
   }
   .map{
@@ -317,25 +318,26 @@
   .map-navbtns {
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    width: 6rem;
-    height: 6rem;
-    border-radius: 1.2rem;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 1.5rem;
     opacity: .5;
-    margin: .5rem 0;
+    margin: 1rem 0rem;
 
   }
   .map-body{
 
-    height: 80%;
+    height: 674px;
     width: 100%;
   }
 
   .map-nav{
     border-radius: .3rem;
-    margin:0.5% 0;
-    background: rgb(210, 210, 211);
-    height: auto;
-    border:1px solid rgb(182,196,211);
+    margin-top: 10px;
+    background: white;
+    height: 120px;
+    padding: 0 3rem;
+
 
   }
 
@@ -345,6 +347,7 @@
     height: 100%;
     float: left;
     text-align: center;
+
 
   }
   .bus{

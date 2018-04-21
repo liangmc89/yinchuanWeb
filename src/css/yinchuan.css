@@ -19,21 +19,19 @@ html,body{
 }
 
 .data-day{
-  line-height: 1.8rem;
-  font-size: 1.6rem;
+  line-height: 2.2rem;
+  font-size: 2rem;
 }
 
 .date-time{
-  font-size: 2.8rem;
+  font-size: 3.6rem;
+  font-weight: bold;
 }
 
 .content-layout{
-  background-color: white;
-  padding:.5rem;
+  background: white;
   height: 100%;
-  display: flex;
-  box-sizing: border-box;
-  flex-direction: column;
+  border-radius: .5rem;
 }
 .content-nav{
   padding: .3rem;
@@ -75,18 +73,19 @@ html,body{
 
 }
 
-.content-hr{
+.content-head-hr{
   border: 1px dashed grey;
   margin: .8rem 0;
+}
+
+.content-hr{
+  border: 1px dashed grey;
+  margin: 1.7rem 0;
 
 }
 .content-title ul{margin:0;}
 .content-body{
-
-  flex: 1;
-  padding: .5rem;
-
-
+  padding: 0 1rem 1rem;
 }
 
 
@@ -111,15 +110,21 @@ html,body{
 
 
 }
+.fcxx-item-detail{ height:100%;overflow:hidden;padding: 0 2rem}
 .fcxx-item-wrapper{
   line-height: 3rem;
-  padding: 1rem 2rem;
   font-size: 2.5rem;
 }
 .fcxx-item-title{
   font-size: 3rem;
-  line-height: 3.4rem;
-  font-weight: 700;
+  line-height: 4.2rem;
+}
+
+.fcxx-detail{
+  height: 730px;
+}
+.fcxx-detail-back{
+  height:50px;
 }
 .fcxx-detail-title{
   font-size: 3.5rem;
@@ -136,7 +141,13 @@ html,body{
 }
 
 .fcxx-secondNav{
+ height: 100%;
 
+
+}
+
+.zwgk-detail-back{
+  padding: .5rem 1rem;
 }
 
 .zwgk-navbtn{
@@ -158,6 +169,7 @@ html,body{
   height: 22%;
   background: rgb(28,55,95);
   line-height: calc(100%*2.5);
+  font-size: 2rem;
 
 }
 .zwgk-top-navbtns{
@@ -177,6 +189,10 @@ html,body{
   line-height: 3.6rem;
 
 
+}
+.detail-container{
+  padding: 1rem;
+  border-radius: .5rem;
 }
 .zwgk-left-nav{
   color: white;
@@ -224,8 +240,8 @@ html,body{
 
 
 .bus-btn{
-  margin: 1rem 0 0 .8rem;
-  width: 20rem;
+  margin: 1rem 0 0 1.12rem;
+  width:12rem;
 }
 
 .bus-station-circle:before{

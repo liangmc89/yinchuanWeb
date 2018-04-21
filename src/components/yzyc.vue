@@ -19,10 +19,10 @@
     </div>
 
     <div class="content-body" id="content-body">
-      <hr class="content-hr">
+      <hr class="content-head-hr">
       <div class="row" >
       <div class="content-title col-6"   >
-        <swiper :options="scrollswiperOption" style="height:35vh" >
+        <swiper :options="scrollswiperOption" style="height:708px" >
           <swiper-slide style="height: auto" >
             <div class="secondNav"  >
               <ul>
@@ -35,14 +35,14 @@
           </swiper-slide>
         </swiper>
       </div>
-      <div class="content-container col-6 " >
-        <swiper :options="scrollswiperOption"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3!=undefined" style="padding:2rem;border-radius: .3rem;height:35vh" :key="id2" class="shadow-3">
-          <swiper-slide    style="height: auto"  >
-            <swiper :options="photoswiperOption" >
+      <div class="detail-container shadow-3 col-6 " >
+        <swiper ref="scrollSwiper" :options="scrollswiperOption"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3!=undefined" style="height: 684px" :key="id2" >
+          <swiper-slide      >
+            <swiper ref="photoSwiper" :options="photoswiperOption" @slideChange="slideChange">
               <swiper-slide :key="index"  v-for="(item,index) in lanmudata.dataList1[id1].dataList2[id2].dataList3">
                 <q-card :key="item.ID"  style="margin-bottom: 1rem"   >
                   <q-card-media>
-                    <img v-if="item.Path!=undefined" :src="getUrl(item.Path)">
+                    <img style="height: 325px" v-if="item.Path!=undefined" :src="getUrl(item.Path)">
                     <q-card-title slot="overlay">
                       <span class="c-title">{{item.Title}}</span>
                     </q-card-title>
@@ -71,6 +71,11 @@
 
   export default {
     props:["lanmudata"],
+    computed:{
+      scrollSwiper(){
+        return this.$refs.scrollSwiper.swiper
+      }
+    },
     methods:{
       getUrl: function(str){
         if(!str) return '';
@@ -84,30 +89,16 @@
         this.id2=index;
 
       },
-      onResize (size) {
+      slideChange:function(){
+        // this.scrollSwiper.updateSlidesSize();
+        console.log("ds")
 
-//        if(document.getElementById('content-body')){
-//          this.isShow=false;
-//          this.swiperHeight=document.getElementById('content-body').clientHeight-24+'px';
-//          this.isShow=true;
-//        }
-//
-//        console.log(document.getElementById('content-body').clientHeight);
       }
     },
     components: {
       swiper,
       swiperSlide
     },
-    mounted:function () {
-//       if(document.getElementById('content-body')){
-//         this.swiperHeight=document.getElementById('content-body').clientHeight-24+'px';
-//
-//       }
-//      this.isShow=true;
-
-    },
-
     data() {
       return {
         id1:0,
@@ -118,23 +109,25 @@
           slidesPerView: 'auto'
         },
         photoswiperOption: {
-          effect: 'flip',
+
           loop: true,
           autoplay:true,
+          autoHeight: true,
           pagination: {
             el: '.swiper-pagination'
           },
-          observer:true,
-          observeParents:true
+
+
 
         },
         scrollswiperOption: {
+          autoHeight: true,
           direction: 'vertical',
           slidesPerView: 'auto',
           freeMode: true,
           mousewheel: true,
-          observer:true,
-          observeParents:true,
+          observer:true
+
         }
 
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="content-layout">
-    <!--<q-window-resize-observable @resize="onResize" />-->
+
     <div class="content-nav">
       <swiper :options="subswiperOption" ref="content-navs-swiper" >
         <!-- slides -->
@@ -18,26 +18,34 @@
       </swiper>
     </div>
     <div class="content-body relative-position" id="content-body">
-      <swiper :options="scrollswiperOption" :style="{height:swiperHeight}" v-if="isShow">
+      <!--<transition-group-->
+        <!--appear-->
+        <!--enter-active-class="animated bounceInUp"-->
+        <!--leave-active-class="animated bounceOutUp"-->
+      <!--&gt;-->
+      <swiper :options="scrollswiperOption" key="nav"  style="height: 720px;margin: 1rem 0" v-if="isShow">
             <swiper-slide v-ripple  :key="index" :class="[index==id2?'secondNav-focus':'']"  v-for="(item,index) in lanmudata.dataList1[id1].dataList2"  >
-              <div class="fcxx-secondNav row" style="height: 95%" @click="secondNavClick(item,index)">
-                  <div class="col-3 overflow-hidden" >
+              <div class="fcxx-secondNav row "  @click="secondNavClick(item,index)" >
+                  <div class="col-4 overflow-hidden shadow-7" >
+
                     <img :src="getUrl(item.Icon)" style="width: 100%;height: 100%">
+
                   </div>
-                <div class="col-8 fcxx-item-wrapper" >
+                <div class="col-8 fcxx-item-wrapper "  >
+                  <div class="fcxx-item-detail">
                   <span class="fcxx-item-title">{{item.Title}}</span><br/>
                   {{item.Ext1}}<br/>
                   {{item.Ext2}}<br/>
                   {{item.Ext3}}<br/>
                 </div>
+                </div>
               </div>
               <hr class="content-hr">
             </swiper-slide>
           </swiper>
+        <div class="fcxx-detail relative-position" v-show="!isShow" key="detail">
 
-        <div class="fcxx-detail relative-position" v-show="!isShow">
-
-          <swiper :options="detailswiperOption" :style="{height:swiperHeight}">
+          <swiper :options="detailswiperOption" style="height: 676px;padding: 1rem 0 ;" >
             <swiper-slide style="height: auto" class="fcxx-text">
               <p class="fcxx-detail-title">详情介绍</p>
               <p class="fcxx-house-name">{{fcxxDetail.Title}}</p>
@@ -50,8 +58,8 @@
               {{fcxxDetail.Ext7}}<br>
               {{fcxxDetail.Ext8}}<br>
               {{fcxxDetail.Ext9}}<br>
-              <swiper :options="photoswiperOption">
-                <swiper-slide :key="index" v-for="(item,index) in fcxxDetail.dataList3">
+              <swiper :options="photoswiperOption" :key="fcxxDetail.title" style="height: 500px">
+                <swiper-slide class="text-center vertical-middle" :key="index" v-for="(item,index) in fcxxDetail.dataList3">
                   <img :src="getUrl(item.Icon)"/>
                 </swiper-slide>
                 <div class="swiper-pagination" slot="pagination"></div>
@@ -60,8 +68,14 @@
               </swiper>
             </swiper-slide>
           </swiper>
+          <div class="fcxx-detail-back text-right">
+            <q-btn icon="keyboard arrow left" flat label="返回" size="lg" @click="isShow=true"/>
+          </div>
         </div>
+
+      <!--</transition-group>-->
     </div>
+
   </div>
 </template>
 
@@ -116,8 +130,8 @@
         },
         photoswiperOption: {
           lazy: true,
-          effect: 'flip',
           loop: true,
+          zoom: true,
           autoplay:true,
           pagination: {
             el: '.swiper-pagination'
@@ -139,7 +153,7 @@
         scrollswiperOption: {
           direction: 'vertical',
           slidesPerView: 3,
-          spaceBetween: 10,
+          spaceBetween: 40,
           freeMode: true,
           preventLinksPropagation : false,
           // scrollbar: {

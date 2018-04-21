@@ -1,22 +1,22 @@
 <template>
   <div class="content-layout">
     <!--<q-window-resize-observable @resize="onResize" />-->
-    <transition-group
-      appear
-      enter-active-class="animated zoomIn"
-      leave-active-class="animated zoomOut"
-    >
-    <swiper key="swiper-nav" :options="zwgkwiperOption" ref="content-navs-swiper" class="fit" v-show="ShowNav">
+    <!--<transition-group-->
+      <!--appear-->
+      <!--enter-active-class="animated zoomIn"-->
+      <!--leave-active-class="animated zoomOut"-->
+    <!--&gt;-->
+    <swiper key="swiper-nav" :options="zwgkwiperOption" ref="content-navs-swiper" class="fit" style="padding: 2rem" v-show="isShow">
       <swiper-slide :key="index" v-for="(item,index) in lanmudata.dataList1" style="width: auto">
         <div @click="zwgkNavBtnClick(index,item)" class="fit">
           <div class="zwgk-navbtn relative-position" v-ripple :style="{backgroundImage:'url('+getUrl(item.Icon)+')'}">
-            <div class="zwgk-nav-text text-no-wrap text-center text-white ">{{item.Title}}</div>
+            <div class="zwgk-nav-text text-no-wrap text-center text-white vertical-middle">{{item.Title}}</div>
           </div>
         </div>
       </swiper-slide>
     </swiper>
 
-    <div key="swiper-contnet" class="zwgk-content" v-show="!ShowNav">
+    <div key="swiper-contnet" class="zwgk-content" v-show="!isShow">
       <div class="zwgk-top-nav relative-position">
         <swiper :options="topswiperOption">
           <swiper-slide :key="index" style="width: auto" v-for="(item,index) in lanmudata.dataList1">
@@ -36,7 +36,7 @@
       </div>
       <div class="zwgk-content-body row" >
         <div class="zwgk-left-nav col-3">
-          <swiper :options="leftswiperOption" style="height: 37vh" :key="id1">
+          <swiper :options="leftswiperOption" style="height: 748px" :key="id1">
             <swiper-slide style="height: auto" :key="index" :class="[index==id2?'leftNav-focus':'']"
                           v-for="(item,index) in lanmudata.dataList1[id1].dataList2" >
                   <div class="leftNavOut"  @click="leftNavClick(item,index)">
@@ -46,10 +46,10 @@
           </swiper>
         </div>
         <div class="zwgk-detail col-9">
-          <swiper  :options="contentswiperOption" ref="contentSwiper" @slideChange="slideChange" style="height: 37vh">
+          <swiper  :options="contentswiperOption" ref="contentSwiper" @slideChange="slideChange" style="height: 680px">
             <swiper-slide :key="index" v-for="(item,index) in lanmudata.dataList1[id1].dataList2">
               <p class="detail-title">{{item.Title}}</p>
-              <swiper :options="contentScrollOptions" style="height: 31vh" >
+              <swiper :options="contentScrollOptions" style="height: 600px" >
                 <swiper-slide style="height: auto">
                   <div style="padding: 1rem 2rem"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3">
                     <img :key="idx" style="width: 100%;height: auto" :src="getUrl(img.Path)" v-for="(img,idx) in lanmudata.dataList1[id1].dataList2[id2].dataList3"/>
@@ -59,10 +59,13 @@
               </swiper>
             </swiper-slide>
           </swiper>
+          <div class="text-right zwgk-detail-back">
+            <q-btn icon="keyboard arrow left" flat label="返回" size="lg" @click="isShow=true"/>
+          </div>
         </div>
       </div>
     </div>
-    </transition-group>
+    <!--</transition-group>-->
   </div>
 </template>
 
@@ -79,10 +82,8 @@
       },
       ShowNav(){
         return this.lanmudata.dataList1[this.id1].isShowNav;
-      },
-      swiperHeight(){
-        return '36vh'
       }
+
 
     },
     methods: {
@@ -92,7 +93,7 @@
       },
       zwgkNavBtnClick: function (index, item) {
         this.id1 = index;
-        this.ShowNav = false;
+        this.isShow = false;
       },
       leftNavClick: function (item, index) {
         this.id2 = index;
@@ -128,6 +129,7 @@
       return {
         id1: 0,
         id2: 0,
+        isShow:true,
         zwgkwiperOption: {
           slidesPerView: 3,
           slidesPerColumn: 4,

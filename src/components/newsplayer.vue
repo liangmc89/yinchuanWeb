@@ -5,7 +5,7 @@
             class="viewer" ref="viewer"
     >
       <template slot-scope="scope">
-            <img class="image" style="display: none" v-for="(src,index) in pdflist" :key="index"
+            <img class="image" style="display: none"  v-for="(src,index) in pdflist" :key="index"
                  :src="src">
       </template>
     </viewer>
@@ -72,5 +72,10 @@
   .viewer-player{
     background: url("../statics/icons/NewspaperBg.jpg") no-repeat 0 0/100% 100% !important;
   }
+
+
+
+
+
 
 </style>

@@ -2,12 +2,7 @@
   <q-page>
     <div class="pageLayout non-selectable" @click="CloseSaver">
       <div class="pageHeader">
-            <div class="logo" @click="refresh"></div>
-        <div class="weather">
-          <iframe src="//www.seniverse.com/weather/weather.aspx?uid=U192E82C80&cid=CHNX000000&l=zh-CHS&p=SMART&a=1&u=C&s=11&m=0&x=1&d=0&fc=FFFFFF&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="200" height="auto" allowTransparency="true"></iframe>
-          <div class="weather-layer"></div>
-        </div>
-
+        <div class="logo" @click="refresh"></div>
         <div class="date">
           <div class="data-day">
             <div class="date-date">{{time_date}}</div>
@@ -15,19 +10,18 @@
           </div>
           <div class="date-time">{{time_time}}</div>
         </div>
+        <div class="weather">
+          <iframe src="//www.seniverse.com/weather/weather.aspx?uid=U192E82C80&cid=CHNX000000&l=zh-CHS&p=SMART&a=0&u=C&s=3&m=0&x=1&d=0&fc=FFFFFF&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="180" height="96" allowTransparency="true"></iframe>          <div class="weather-layer"></div>
+        </div>
 
-        <!--<img src="../statics/icons/logo.png"/>-->
       </div>
       <div class="pageBody relative-position">
         <div class="bodyContent">
           <div class="content-container fit relative-position">
             <!--<transition-->
-
             <!--enter-active-class="animated fadeIn"-->
             <!--leave-active-class="animated fadeOut"-->
             <!--&gt;-->
-
-
             <!--吃在银川 lanmuid:68-->
             <Yzyc v-if="currentNav==68" :key="68" :lanmudata="lanmu"></Yzyc>
             <!--游在银川 lanmuid:68-->
@@ -55,17 +49,13 @@
             <!--地图指引 LanmuID：24-->
             <mymap v-if="currentNav==24" :key="24" :lanmudata="lanmu"></mymap>
             <!--银川日报 LanmuID：35-->
+            <newsplayer v-if="currentNav==35" :key="35" :pdflist="RBpdflist"></newsplayer>
             <!--<pdfplayer v-show="currentNav==35" :key="35" :pdflist="RBpdflist"></pdfplayer>-->
+            <!--银川晚报 LanmuID：31-->
+            <pdfplayer v-show="currentNav==31" :key="31" :pdflist="WBpdflist"></pdfplayer>
+            <!--<contentplayer></contentplayer>-->
             <!--视屏点播 LanmuID：21-->
             <videoplayer v-if="currentNav==21" :lanmudata="lanmu"></videoplayer>
-
-            <newsplayer v-if="currentNav==35"  :key="35" :pdflist="RBpdflist"></newsplayer>
-
-            <!--银川晚报 LanmuID：31-->
-            <newsplayer v-if="currentNav==31"  :key="35" :pdflist="WBpdflist"></newsplayer>
-            <!--<pdfplayer  :key="31" :pdflist="WBpdflist"></pdfplayer>-->
-            <!--<contentplayer></contentplayer>-->
-
             <!--</transition>-->
           </div>
 
@@ -108,15 +98,14 @@
       </div>
       <div class="pageFoot" >
         <div class="fit">
-          <video style="height: 100%;width: 100%" controls autoplay src="http://occcudapv.bkt.clouddn.com/guchenghu/bb7c6e4c-e62e-4ea7-bdc9-f9ce3a678274.mp4"></video>
-        <!--<video-player  style="height: 100%;width: 100%"-->
-                       <!--ref="homevideoPlayer"-->
-                       <!--:options="homeplayerOptions"-->
-                       <!--@ended="nextVideo"-->
-                       <!--@error="nextVideo"-->
-                       <!--@pause="onPlayerPause($event)"-->
-                       <!--customEventName="changed">-->
-        <!--</video-player>-->
+          <video-player  style="height: 100%;width: 100%"
+                         ref="homevideoPlayer"
+                         :options="homeplayerOptions"
+                         @ended="nextVideo"
+                         @error="nextVideo"
+                         @pause="onPlayerPause($event)"
+                         customEventName="changed">
+          </video-player>
         </div>
       </div>
     </div>
@@ -135,12 +124,13 @@
   import Fcxx from "../components/fcxx.vue"
   import Zwgk from '../components/zwgk.vue'
   import Videoplayer from '../components/videoplayer'
-  import Newsplayer from '../components/newsplayer'
+  import Newsplayer from "../components/newsplayer";
 
 
   export default {
     name: 'PageIndex',
     components: {
+      Newsplayer,
       Yzyc,
       pdfplayer,
       swiper,
@@ -151,8 +141,7 @@
       Fcxx,
       Zwgk,
       Videoplayer,
-      pdf,
-      Newsplayer
+      pdf
 
 
     },
@@ -201,21 +190,19 @@
       },
       getAd: function () {
         let self=this;
-        this.$axios.get('/Service/h5/h5AD.ashx', {params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response) => {
+        this.$axios.get('/Service/h5/h5AD.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
           if (response.status == 200) {
             var data = response.data;
             data.forEach((item)=> {
-              //console.log(item.FileName);
+              console.log(item.FileName);
               this.videolist.push({src:this.getUrl(item.FileName),poster:this.getUrl(item.Icon)});
             });
 
             if(data.length>0){
               this.homeplayerOptions.sources=[this.videolist[this.currentVideoIndex]];
-              //console.log(this.player)
+              console.log(this.player)
               //this.player.play();
             }
-
-           // console.log(this.videolist);
 
 
 
@@ -225,16 +212,13 @@
         });
       },
       getNewsPaper: function () {
-
-        //console.log(this.$route.params.csid);
-        //this.$axios.get('/Service/h5/NewsPaperList.ashx', {params: {csid: this.$route.params.csid, pwd: this.$route.params.pwd}}).then((response) => {
-        //this.$axios.get('/Service/h5/NewsPaperList.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
-         this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
+        //console.log(this.getQueryString("csid")+'   '+this.getQueryString("pwd"));
+        this.$axios.get('/Service/h5/NewsPaperList.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
+          //this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
 
           if (response.status == 200) {
 
             var data = response.data;
-
             //日报
             var dayNews = data.filter(function (x) {
               return x.PublishType == 1 && x.LayoutType == 1;
@@ -267,9 +251,8 @@
         })
       },
       getLanmuData: function () {
-//        debugger
-        this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
-        //this.$axios.get('/Service/h5/LanmuData.ashx', {params: {csid: this.$route.params.csid, pwd: this.$route.params.pwd}}).then((response) => {
+        // this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
+        this.$axios.get('/Service/h5/LanmuData.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
           if (response.status == 200) {
 
             var data = eval('(' + response.data + ')');
@@ -302,8 +285,8 @@
               });
               lanmuList.push(obj);
             });
-
-            //console.log(lanmuList)
+            //console.log(lanmuList);
+            console.log(lanmuList)
             this.lanmuData = lanmuList;
             this.currentNav = lanmuList[0].LanmuID;
           } else {
@@ -328,9 +311,8 @@
         //屏保为180S
         setInterval(()=>{
           this.saverStart++;
-          if(this.saverStart>6){
-            //this.isSaver=true;
-            this.currentNav=35;
+          if(this.saverStart>60){
+            this.isSaver=true;
           }
         },3000);
       },
@@ -340,12 +322,12 @@
         this.lanmu = this.lanmuData.filter((x) => {
           return x.LanmuID == item.LanmuID;
         })[0];
-        //console.log(this.lanmu);
+        console.log(this.lanmu);
 
 
       },
       onPlayerPause(e){
-       this.player.play()
+        this.player.play()
       },
       nextVideo: function () {
 
@@ -355,12 +337,12 @@
         } else {
           this.currentVideoIndex = 0;
         }
-       this.homeplayerOptions.sources=[this.videolist[this.currentVideoIndex]];
+        this.homeplayerOptions.sources=[this.videolist[this.currentVideoIndex]];
         this.player.play()
       }
     },
     mounted: function () {
-      ;this.ScreenSaver();
+      //this.ScreenSaver();
       this.getLanmuData();
       this.getNewsPaper();
       this.getAd();
@@ -382,7 +364,7 @@
         videolist:[],
         homeplayerOptions: {
           playToggle:false,
-          autoplay: true,
+          autoplay: false,
           bigPlayButton:false,
           controlBar:false,
           sources: [],
@@ -409,13 +391,15 @@
 <style>
   .pageLayout {
     /*width: 640px;*/
-    width: 100%;
-    height: 100%;
+    width: 1080px;
+    height: 1920px;
     /*width: 1280px;*/
     /*height: 1920px;*/
     /*min-width: 640px;*/
     /*min-height: 960px;*/
     margin: 0 auto;
+    box-sizing: border-box;
+    overflow: hidden;
 
     /*width: 100%;*/
     /*height:100%;*/
@@ -424,48 +408,49 @@
   .pageHeader {
     background: rgb(34, 53, 74);
     width: 100%;
-    padding: 2rem;
-    height: 6%;
+    padding: 1rem 3rem;
+    height: 120px;
     position:relative;
     overflow: hidden;
   }
 
   .logo {
     background: url("../statics/icons/logo.png") no-repeat 0 0/100% 100%;
-    width: 30%;
-    max-width: 200px;
-    height: 100%;
+    width: 25%;
+    height: 75%;
     float: left;
+    margin: 1rem 0;
+
 
   }
 
   .pageBody {
     background: rgb(210, 210, 211);
-    height: 50%;
+    height: 990px;
   }
 
   .pageFoot {
-    height: 44%;
+    height: 810px;
     width:100%;
   }
 
   .bodyContent {
     width: 100%;
-    height: 85%;
-    padding: 1.5rem;
+    height: 840px;
+
   }
 
   .navMenu {
     background: url("../statics/icons/menuBg.png") repeat;
-    padding: 1rem 1.5rem;
-    height: auto;
+    padding: 1rem 3rem;
+    height: 150px;
 
   }
 
   .content-container {
     border-radius: .3rem;
-    background: white;
-
+    background: rgb(211,211,210);
+    padding: 1.5rem;
 
   }
 
@@ -474,14 +459,13 @@
   }
 
   .navbtn {
-    /*height: 3rem;*/
-    /*width: 3rem;*/
-    padding: 1.5rem .2rem;
+    padding: 1.3rem .2rem;
+    margin-top: .3rem;
   }
 
   .navbtn img {
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
   }
 
   .noIcon {
@@ -501,9 +485,9 @@
   }
 
   .ss {
-    width: 1.08rem;
-    height: 1.32rem;
-    background-size: 1.08rem 1.32rem;
+    width: 2rem;
+    height: 2.36rem;
+    background-size: 2rem 2.36rem;
     margin-top: -0.8rem;
 
   }
