@@ -190,7 +190,8 @@
       },
       getAd: function () {
         let self=this;
-        this.$axios.get('/Service/h5/h5AD.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
+        this.$axios.get('/Service/h5/h5AD.ashx', {params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response) => {
+        //this.$axios.get('/Service/h5/h5AD.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
           if (response.status == 200) {
             var data = response.data;
             data.forEach((item)=> {
@@ -213,8 +214,8 @@
       },
       getNewsPaper: function () {
         //console.log(this.getQueryString("csid")+'   '+this.getQueryString("pwd"));
-        this.$axios.get('/Service/h5/NewsPaperList.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
-          //this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
+        //this.$axios.get('/Service/h5/NewsPaperList.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
+          this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
 
           if (response.status == 200) {
 
@@ -251,8 +252,8 @@
         })
       },
       getLanmuData: function () {
-        // this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
-        this.$axios.get('/Service/h5/LanmuData.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
+         this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
+        //this.$axios.get('/Service/h5/LanmuData.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
           if (response.status == 200) {
 
             var data = eval('(' + response.data + ')');
@@ -364,7 +365,7 @@
         videolist:[],
         homeplayerOptions: {
           playToggle:false,
-          autoplay: false,
+          autoplay: true,
           bigPlayButton:false,
           controlBar:false,
           sources: [],
