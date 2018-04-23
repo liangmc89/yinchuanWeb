@@ -303,7 +303,10 @@ html,body{
   overflow: hidden;
 }
 
+.video-focus{
+  border-color: #2A447D !important;
 
+}
 
 .vjs-big-play-button{
   top: 50% !important;

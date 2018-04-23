@@ -12,7 +12,7 @@
             <div class="video-item">
               <swiper :options="videoswiperOption" style="height: 100%;padding: 1rem;background: rgb(233,234,235)">
                 <swiper-slide  :key="index" v-for="(item,index) in lanmudata.dataList1" >
-                     <div class="videoposter shadow-4" @click="playVideo(index)" >
+                     <div class="videoposter shadow-4" @click="playVideo(index)" v-bind:class="[index==videoIndex?'video-focus':'']" >
                        <img  :src="getUrl(item.Icon)">
                        <div class="video-title text-no-wrap overflow-hidden">{{item.Title}}</div>
                      </div>
@@ -90,6 +90,8 @@
     height: 20%;
   }
   .videoposter{
+    box-sizing: border-box;
+    border:5px solid transparent;
     width: 100%;
     height: 100%;
     position: relative;
