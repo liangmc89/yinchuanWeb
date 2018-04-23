@@ -52,7 +52,7 @@
             <newsplayer v-if="currentNav==35" :key="35" :pdflist="RBpdflist"></newsplayer>
             <!--<pdfplayer v-show="currentNav==35" :key="35" :pdflist="RBpdflist"></pdfplayer>-->
             <!--银川晚报 LanmuID：31-->
-            <pdfplayer v-show="currentNav==31" :key="31" :pdflist="WBpdflist"></pdfplayer>
+            <newsplayer v-if="currentNav==31" :key="31" :pdflist="WBpdflist"></newsplayer>
             <!--<contentplayer></contentplayer>-->
             <!--视屏点播 LanmuID：21-->
             <videoplayer v-if="currentNav==21" :lanmudata="lanmu"></videoplayer>
@@ -77,19 +77,19 @@
             </swiper-slide>
 
           </swiper>
-          <div class="swiper-button-prev ss" style="left: 0" slot="button-prev"></div>
-          <div class="swiper-button-next ss" style="right: 0" slot="button-next"></div>
+          <div class="swiper-button-prev swiper-button-white ss" style="left: 0" slot="button-prev"></div>
+          <div class="swiper-button-next swiper-button-white ss" style="right: 0" slot="button-next"></div>
         </div>
 
         <div class="screensaver" v-show="isSaver">
           <q-carousel
             color="white"
             infinite
-            :autoplay="3000"
+            :autoplay="10000"
             class="saver-carousel"
           >
             <q-carousel-slide class="saver-slide" :key="index" v-for="(item,index) in RBpdflist">
-              <pdf  :src="item"></pdf>
+              <img style="width: 100%;height: 100%" :src="item"/>
             </q-carousel-slide>
 
           </q-carousel>
@@ -343,7 +343,7 @@
       }
     },
     mounted: function () {
-      //this.ScreenSaver();
+      this.ScreenSaver();
       this.getLanmuData();
       this.getNewsPaper();
       this.getAd();
@@ -374,7 +374,7 @@
           //poster: this.getUrl(this.lanmudata.dataList1[0].Icon)
         },
         swiperOption: {
-          slidesPerView: "auto",
+          slidesPerView: "7",
           spaceBetween: 10,
           navigation: {
             nextEl: '.swiper-button-next',
@@ -465,8 +465,8 @@
   }
 
   .navbtn img {
-    width: 4rem;
-    height: 4rem;
+    width: 5.5rem;
+    height: 5.5rem;
   }
 
   .noIcon {

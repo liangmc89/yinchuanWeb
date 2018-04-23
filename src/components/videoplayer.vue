@@ -11,10 +11,10 @@
             </div>
             <div class="video-item">
               <swiper :options="videoswiperOption" style="height: 100%;padding: 1rem;background: rgb(233,234,235)">
-                <swiper-slide  :key="index" v-for="(item,index) in lanmudata.dataList1" style="height: 100%">
-                     <div class="videoposter" @click="playVideo(index)">
+                <swiper-slide  :key="index" v-for="(item,index) in lanmudata.dataList1" >
+                     <div class="videoposter shadow-4" @click="playVideo(index)" >
                        <img  :src="getUrl(item.Icon)">
-                       <div class="video-title text-no-wrap">{{item.Title}}</div>
+                       <div class="video-title text-no-wrap overflow-hidden">{{item.Title}}</div>
                      </div>
                 </swiper-slide>
               </swiper>

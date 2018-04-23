@@ -28,6 +28,8 @@ module.exports = function (ctx) {
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history',
+      //publicPath:'spa-mat',
+      htmlFilename:'yinchuan.html',
       // gzip: true,
       // analyze: true,
       // extractCSS: false,

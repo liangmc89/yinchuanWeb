@@ -3,7 +3,7 @@
     <div class="map-body relative-position">
       <div class="bus" v-if="id1==0">
              <swiper style="height: 100%" :options="busScrollOption">
-               <swiper-slide style="height: auto">
+               <swiper-slide style="height: auto;text-center">
                  <q-btn size="xl" class="bus-btn" :key="index" v-for="(item,index) in lanmudata.dataList1[id1].dataList2"  dense color="white" text-color="primary" @click="ShowBus(index)" :label="item.Title">
                    <q-popover :key="index"
                               anchor="bottom left"
@@ -318,8 +318,8 @@
   .map-navbtns {
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    width: 8rem;
-    height: 8rem;
+    width: 9rem;
+    height: 9.5rem;
     border-radius: 1.5rem;
     opacity: .5;
     margin: 1rem 0rem;

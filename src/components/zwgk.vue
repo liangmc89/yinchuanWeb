@@ -20,10 +20,10 @@
       <div class="zwgk-top-nav relative-position">
         <swiper :options="topswiperOption">
           <swiper-slide :key="index" style="width: auto" v-for="(item,index) in lanmudata.dataList1">
-            <button @click="TopNavBtnClick(item,index)"
+            <button @click="TopNavBtnClick(item,index)" v-bind:class="[index==id1?'zwgk-navbtn-focus':'']"
                     class="zwgk-top-navbtns  q-btn inline relative-position q-btn-item non-selectable q-btn-rectangle q-btn-push q-focusable q-hoverable text-white"
             >
-              <!--v-bind:class="[index==id1?'contentnavbtn-focus':'']"-->
+
               <div class="content-navbtn">
                 <div class="text-no-wrap">{{item.Title}}</div>
               </div>
