@@ -11,7 +11,10 @@
           <div class="date-time">{{time_time}}</div>
         </div>
         <div class="weather">
-          <iframe src="//www.seniverse.com/weather/weather.aspx?uid=U192E82C80&cid=CHNX000000&l=zh-CHS&p=SMART&a=0&u=C&s=3&m=0&x=1&d=0&fc=FFFFFF&bgc=&bc=&ti=0&in=0&li=" frameborder="0" scrolling="no" width="180" height="96" allowTransparency="true"></iframe>          <div class="weather-layer"></div>
+          <iframe
+            src="//www.seniverse.com/weather/weather.aspx?uid=U192E82C80&cid=CHNX000000&l=zh-CHS&p=SMART&a=0&u=C&s=3&m=0&x=1&d=0&fc=FFFFFF&bgc=&bc=&ti=0&in=0&li="
+            frameborder="0" scrolling="no" width="180" height="96" allowTransparency="true"></iframe>
+          <div class="weather-layer"></div>
         </div>
 
       </div>
@@ -96,15 +99,16 @@
         </div>
 
       </div>
-      <div class="pageFoot" >
+      <div class="pageFoot">
         <div class="fit">
-          <video-player  style="height: 100%;width: 100%"
-                         ref="homevideoPlayer"
-                         :options="homeplayerOptions"
-                         @ended="nextVideo"
-                         @error="nextVideo"
-                         @pause="onPlayerPause($event)"
-                         customEventName="changed">
+          <!--<img v-if="!isPlayVideo" :src="videolist[currentVideoIndex].src">-->
+          <video-player v-if="isPlayVideo" style="height: 100%;width: 100%"
+                        ref="homevideoPlayer"
+                        :options="homeplayerOptions"
+                        @ended="nextVideo"
+                        @error="nextVideo"
+                        @pause="onPlayerPause($event)"
+                        customEventName="changed">
           </video-player>
         </div>
       </div>
@@ -146,32 +150,69 @@
 
     },
     filters: {},
-    computed:{
+    computed: {
       player() {
         return this.$refs.homevideoPlayer.player
       }
+
     },
     methods: {
-      datePad:function (s) {
+      checkUpdate() {
+        let _updateTime = null;
+        let nextCheck = 60;
+        let currentSecond = 0;
+        let self = this;
+       var checkId= setInterval(() => {
+          currentSecond++;
+         // console.log(currentSecond+"s")
+          if (currentSecond == nextCheck) {
+            if(!self.isAuth){
+              self.refresh();
+              return;
+            }
+            // debugger
+            currentSecond = 0;
+            nextCheck = parseInt(Math.round(Math.random() * 45 + 15));
+            //console.log(nextCheck);
+            self.$axios.get('/Service/h5/DataInfo.ashx').then((response) => {
+              if (response.status == 200) {
+                _updateTime = response.data.UpdateTime;
+                if(self.updateTime==null){
+                  self.updateTime=_updateTime;
+                }
+                if(self.updateTime!=_updateTime){
+                  //console.log("准备刷新："+self.updateTime+"  -->"+_updateTime);
+                  self.refresh();
+                }
+              }
+            }).catch((err) => {
+
+            });
+          }
+
+        }, 1000);
+      },
+
+      datePad: function (s) {
         let result;
-        if(s<10){
-          result='0'+s;
-        }else{
-          result=s;
+        if (s < 10) {
+          result = '0' + s;
+        } else {
+          result = s;
         }
         return result;
       },
-      ShowClock:function () {
-        setInterval(()=>{
-          let d=new Date();
-          this.time_date=d.getFullYear() + "年" +(d.getMonth() + 1) + "月" + d.getDate() + "日";
-          this.time_week=' 星期'+'日一二三四五六'.charAt(d.getDay());
-          this.time_time=this.datePad(d.getHours())+':'+this.datePad(d.getMinutes())+":"+this.datePad(d.getSeconds());
-        },1000);
+      ShowClock: function () {
+        setInterval(() => {
+          let d = new Date();
+          this.time_date = d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + d.getDate() + "日";
+          this.time_week = ' 星期' + '日一二三四五六'.charAt(d.getDay());
+          this.time_time = this.datePad(d.getHours()) + ':' + this.datePad(d.getMinutes()) + ":" + this.datePad(d.getSeconds());
+        }, 1000);
       },
-      CloseSaver:function () {
-        this.isSaver=false;
-        this.saverStart=0;
+      CloseSaver: function () {
+        this.isSaver = false;
+        this.saverStart = 0;
       },
       refresh: function () {
         window.location.reload();
@@ -189,22 +230,42 @@
         return ResourceUrl + str;
       },
       getAd: function () {
-        let self=this;
-        this.$axios.get('/Service/h5/h5AD.ashx', {params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response) => {
-        //this.$axios.get('/Service/h5/h5AD.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
+        let self = this;
+        this.$axios.get('/Service/h5/h5AD.ashx', {
+          params: {
+            csid: this.getQueryString("csid"),
+            pwd: this.getQueryString("pwd")
+          }
+        }).then((response) => {
+          //this.$axios.get('/Service/h5/h5AD.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
           if (response.status == 200) {
+            if(response.data=='{error:NoAuthority}'){
+              self.isAuth=false;
+              return
+            }
             var data = response.data;
-            data.forEach((item)=> {
-              console.log(item.FileName);
-              this.videolist.push({src:this.getUrl(item.FileName),poster:this.getUrl(item.Icon)});
+            data.forEach((item) => {
+              console.log(item);
+              this.videolist.push({src: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg', poster: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg',ShowTime:7});
+              this.videolist.push({src: this.getUrl(item.FileName), poster: this.getUrl(item.Icon),ShowTime:item.ShowTime});
             });
 
-            if(data.length>0){
-              this.homeplayerOptions.sources=[this.videolist[this.currentVideoIndex]];
-              console.log(this.player)
+            if (data.length > 0) {
+
+
+
+              if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(this.videolist[this.currentVideoIndex].src)) {
+                this.isPlayVideo=false;
+
+              }else{
+                this.isPlayVideo=true;
+                this.homeplayerOptions.sources = [this.videolist[this.currentVideoIndex]];
+              }
+
+
+              //console.log(this.player)
               //this.player.play();
             }
-
 
 
           } else {
@@ -213,12 +274,21 @@
         });
       },
       getNewsPaper: function () {
+        let self=this;
         //console.log(this.getQueryString("csid")+'   '+this.getQueryString("pwd"));
         //this.$axios.get('/Service/h5/NewsPaperList.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
-          this.$axios.get('/Service/h5/NewsPaperList.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
+        this.$axios.get('/Service/h5/NewsPaperList.ashx', {
+          params: {
+            csid: this.getQueryString("csid"),
+            pwd: this.getQueryString("pwd")
+          }
+        }).then((response) => {
 
           if (response.status == 200) {
-
+            if(response.data=='{error:NoAuthority}'){
+              self.isAuth=false;
+              return
+            }
             var data = response.data;
             //日报
             var dayNews = data.filter(function (x) {
@@ -252,10 +322,20 @@
         })
       },
       getLanmuData: function () {
-         this.$axios.get('/Service/h5/LanmuData.ashx',{params:{csid:this.getQueryString("csid"),pwd:this.getQueryString("pwd")}}).then((response)=>{
-        //this.$axios.get('/Service/h5/LanmuData.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
+        let self=this;
+        this.$axios.get('/Service/h5/LanmuData.ashx', {
+          params: {
+            csid: this.getQueryString("csid"),
+            pwd: this.getQueryString("pwd")
+          }
+        }).then((response) => {
+          //this.$axios.get('/Service/h5/LanmuData.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
           if (response.status == 200) {
 
+            if(response.data=='{error:NoAuthority}'){
+              self.isAuth=false;
+              return
+            }
             var data = eval('(' + response.data + ')');
             var lanmuList = new Array();
             //栏目
@@ -308,14 +388,14 @@
           });
         })
       },
-      ScreenSaver:function () {
+      ScreenSaver: function () {
         //屏保为180S
-        setInterval(()=>{
+        setInterval(() => {
           this.saverStart++;
-          if(this.saverStart>60){
-            this.isSaver=true;
+          if (this.saverStart > 60) {
+            this.isSaver = true;
           }
-        },3000);
+        }, 3000);
       },
       navBtnClick: function (index, item) {
 
@@ -327,7 +407,7 @@
 
 
       },
-      onPlayerPause(e){
+      onPlayerPause(e) {
         this.player.play()
       },
       nextVideo: function () {
@@ -338,11 +418,12 @@
         } else {
           this.currentVideoIndex = 0;
         }
-        this.homeplayerOptions.sources=[this.videolist[this.currentVideoIndex]];
+        this.homeplayerOptions.sources = [this.videolist[this.currentVideoIndex]];
         this.player.play()
       }
     },
     mounted: function () {
+      this.checkUpdate();
       this.ScreenSaver();
       this.getLanmuData();
       this.getNewsPaper();
@@ -351,26 +432,29 @@
     },
     data() {
       return {
-        time_date:'',
-        time_week:'',
-        time_time:'',
-        saverStart:0,
-        isSaver:false,
+        isAuth:true,
+        isPlayVideo:true,
+        updateTime: null,
+        time_date: '',
+        time_week: '',
+        time_time: '',
+        saverStart: 0,
+        isSaver: false,
         currentNav: "",
         lanmu: [],
         lanmuData: [],
         lanmuList: [],//栏目列表
         LanumID: 0,//当前栏目
         currentVideoIndex: 0,
-        videolist:[],
+        videolist: [],
         homeplayerOptions: {
-          playToggle:false,
+          playToggle: false,
           autoplay: true,
-          bigPlayButton:false,
-          controlBar:false,
+          bigPlayButton: false,
+          controlBar: false,
           sources: [],
           language: 'zh-CN',
-          techOrder: ['html5','flash'],
+          techOrder: ['html5', 'flash'],
           //poster: this.getUrl(this.lanmudata.dataList1[0].Icon)
         },
         swiperOption: {
@@ -391,19 +475,11 @@
 </script>
 <style>
   .pageLayout {
-    /*width: 640px;*/
     width: 1080px;
     height: 1920px;
-    /*width: 1280px;*/
-    /*height: 1920px;*/
-    /*min-width: 640px;*/
-    /*min-height: 960px;*/
     margin: 0 auto;
     box-sizing: border-box;
     overflow: hidden;
-
-    /*width: 100%;*/
-    /*height:100%;*/
   }
 
   .pageHeader {
@@ -411,7 +487,7 @@
     width: 100%;
     padding: 1rem 3rem;
     height: 120px;
-    position:relative;
+    position: relative;
     overflow: hidden;
   }
 
@@ -421,8 +497,6 @@
     height: 75%;
     float: left;
     margin: 1rem 0;
-
-
   }
 
   .pageBody {
@@ -432,7 +506,7 @@
 
   .pageFoot {
     height: 810px;
-    width:100%;
+    width: 100%;
   }
 
   .bodyContent {
@@ -450,7 +524,7 @@
 
   .content-container {
     border-radius: .3rem;
-    background: rgb(211,211,210);
+    background: rgb(211, 211, 210);
     padding: 1.5rem;
 
   }

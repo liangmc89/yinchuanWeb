@@ -38,7 +38,7 @@
       <div class="detail-container shadow-3 col-6 " >
         <swiper ref="scrollSwiper" :options="scrollswiperOption"  v-if="lanmudata.dataList1[id1].dataList2[id2]!=undefined&&lanmudata.dataList1[id1].dataList2[id2].dataList3!=undefined" style="height: 684px" :key="id2" >
           <swiper-slide      >
-            <swiper ref="photoSwiper" :options="photoswiperOption" @slideChange="slideChange">
+            <swiper v-if="lanmudata.dataList1[id1].dataList2[id2].dataList3&&lanmudata.dataList1[id1].dataList2[id2].dataList3.length>0" ref="photoSwiper" :options="photoswiperOption" @slideChange="slideChange">
               <swiper-slide :key="index"  v-for="(item,index) in lanmudata.dataList1[id1].dataList2[id2].dataList3">
                 <q-card :key="item.ID"  style="margin-bottom: 1rem"   >
                   <q-card-media>

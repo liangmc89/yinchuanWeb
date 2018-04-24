@@ -12,8 +12,8 @@
             <div class="video-item">
               <swiper :options="videoswiperOption" style="height: 100%;padding: 1rem;background: rgb(233,234,235)">
                 <swiper-slide  :key="index" v-for="(item,index) in lanmudata.dataList1" >
-                     <div class="videoposter shadow-4" @click="playVideo(index)" v-bind:class="[index==videoIndex?'video-focus':'']" >
-                       <img  :src="getUrl(item.Icon)">
+                     <div class="videoposter shadow-4" @click="isPlayVideo(index)" v-bind:class="[index==videoIndex?'video-focus':'']" >
+                         <img v-if="item.Icon!=''" :src="getUrl(item.Icon)">
                        <div class="video-title text-no-wrap overflow-hidden">{{item.Title}}</div>
                      </div>
                 </swiper-slide>
@@ -68,7 +68,7 @@
 
     },
     methods: {
-      playVideo:function (index) {
+      isPlayVideo:function (index) {
          this.videoIndex=index;
          this.playerOptions.sources=[this.videolist[this.videoIndex]]||[];
          this.playerOptions.poster=this.videolist[this.videoIndex].poster||'';
