@@ -100,16 +100,19 @@
 
       </div>
       <div class="pageFoot">
-        <div class="fit">
-          <!--<img v-if="!isPlayVideo" :src="videolist[currentVideoIndex].src">-->
-          <video-player v-if="isPlayVideo" style="height: 100%;width: 100%"
-                        ref="homevideoPlayer"
-                        :options="homeplayerOptions"
-                        @ended="nextVideo"
-                        @error="nextVideo"
-                        @pause="onPlayerPause($event)"
-                        customEventName="changed">
-          </video-player>
+        <div class="fit text-center ">
+          <img v-if="!isPlayVideo" class="adImg fit" :src="videolist[currentVideoIndex].src"/>
+           <div v-show="isPlayVideo" class="fit">
+             <video-player  style="height: 100%;width: 100%"
+                            ref="homevideoPlayer"
+                            :options="homeplayerOptions"
+                            @ended="nextVideo"
+                            @error="videoError($event)"
+                            @pause="onPlayerPause($event)"
+                            customEventName="changed">
+             </video-player>
+           </div>
+
         </div>
       </div>
     </div>
@@ -244,22 +247,32 @@
               return
             }
             var data = response.data;
+            // console.log(response.data)
+            // self.videolist.push({src: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg', poster: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg',ShowTime:3});
+            // self.videolist.push({src: self.getUrl('21d96d622b154116856f2ef0c1e545e8.fl'), poster: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg',ShowTime:3});
+            // self.videolist.push({src: 'http://211.95.73.116:8001/upload/newspaper/20180424/2.jpg', poster: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg',ShowTime:3});
+            // self.videolist.push({src: 'http://211.95.73.116:8001/upload/newspaper/20180424/3.png', poster: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg',ShowTime:3});
+            // self.videolist.push({src: self.getUrl('23deb38c9ca846beb1bde61771a70a55.flv'), poster: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg',ShowTime:3});
             data.forEach((item) => {
-              console.log(item);
-              this.videolist.push({src: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg', poster: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg',ShowTime:7});
-              this.videolist.push({src: this.getUrl(item.FileName), poster: this.getUrl(item.Icon),ShowTime:item.ShowTime});
+
+              //self.videolist.push({src: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg', poster: 'http://211.95.73.116:8001/upload/newspaper/20180424/1.jpg',ShowTime:7});
+              self.videolist.push({src: self.getUrl(item.FileName), poster: self.getUrl(item.Icon),ShowTime:item.ShowTime});
+
             });
+            console.log(this.videolist);
 
             if (data.length > 0) {
 
-
-
-              if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(this.videolist[this.currentVideoIndex].src)) {
-                this.isPlayVideo=false;
+              if (/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(self.videolist[self.currentVideoIndex].src)) {
+                self.isPlayVideo=false;
+                var timeOut=(5||this.videolist[this.currentVideoIndex].ShowTime)*1000;
+                setTimeout(()=>{
+                  this.nextVideo();
+                },timeOut);
 
               }else{
-                this.isPlayVideo=true;
-                this.homeplayerOptions.sources = [this.videolist[this.currentVideoIndex]];
+                self.isPlayVideo=true;
+                self.homeplayerOptions.sources = [self.videolist[self.currentVideoIndex]];
               }
 
 
@@ -331,7 +344,6 @@
         }).then((response) => {
           //this.$axios.get('/Service/h5/LanmuData.ashx', {params: {csid: csid, pwd: pwd}}).then((response) => {
           if (response.status == 200) {
-
             if(response.data=='{error:NoAuthority}'){
               self.isAuth=false;
               return
@@ -407,19 +419,38 @@
 
 
       },
+
       onPlayerPause(e) {
         this.player.play()
       },
-      nextVideo: function () {
 
+      videoError:function(e){
+        this.nextVideo();
+      },
+      nextVideo: function () {
+        let self=this;
         let count = this.videolist.length;
         if (this.currentVideoIndex < count - 1) {
           this.currentVideoIndex++;
         } else {
           this.currentVideoIndex = 0;
         }
-        this.homeplayerOptions.sources = [this.videolist[this.currentVideoIndex]];
-        this.player.play()
+         console.log(this.videolist[this.currentVideoIndex]);
+
+        if (/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(this.videolist[this.currentVideoIndex].src)) {
+          this.isPlayVideo=false;
+          var timeOut=(this.videolist[this.currentVideoIndex].ShowTime||5)*1000;
+          setTimeout(()=>{
+            self.nextVideo();
+          },timeOut);
+
+        }else{
+          this.isPlayVideo=true;
+          this.homeplayerOptions.sources = [this.videolist[this.currentVideoIndex]];
+          this.player.play()
+        }
+
+
       }
     },
     mounted: function () {
@@ -451,7 +482,7 @@
           playToggle: false,
           autoplay: true,
           bigPlayButton: false,
-          controlBar: false,
+          controlBar: true,
           sources: [],
           language: 'zh-CN',
           techOrder: ['html5', 'flash'],
@@ -571,6 +602,10 @@
     width: 100%;
     height: 100%;
     background: black;
+  }
+
+  .adImg{
+
   }
 
 
